@@ -9,4 +9,5 @@ game.add.sprite(0, 0, 'ground');
 }
 
 function update() {
+  //mdr j'aime le paté
 }
