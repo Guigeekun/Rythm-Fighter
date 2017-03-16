@@ -12,4 +12,8 @@ const { mix } = require('laravel-mix');
  */
 
 mix.js('resources/assets/js/app.js', 'public/js')
+   .js('resources/assets/js/game.js', 'public/js')
+   .js('resources/assets/js/jquery.js', 'public/js')
+   .js('resources/assets/js/phaser.js', 'public/js')
+   .scripts(['public/js/phaser.js', 'public/js/game.js'], 'public/js/fullGame.js')
    .sass('resources/assets/sass/app.scss', 'public/css');

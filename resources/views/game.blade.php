@@ -1,12 +1,7 @@
-var game = new Phaser.Game(1280, 720, Phaser.AUTO, 'Rythm-Fighter', { preload: preload, create: create, update: update });
+@extends('layouts.main')
 
-function preload() {
-   game.load.image('ground', 'public/img/_ground/ground05.png');
-}
+@section('title', 'Rythm Fighter')
 
-function create() {
-game.add.sprite(0, 0, 'ground');
-}
-
-function update() {
-}
+@section('scripts')
+<script src="./js/game.js">
+@stop
