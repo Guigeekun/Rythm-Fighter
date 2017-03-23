@@ -14,4 +14,4 @@
 Route::get('/', function () {
     return view('menu');
 });
-Route::get('/game', )
+Route::get('/game','Menucontroller@game');
