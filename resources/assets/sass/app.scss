@@ -5,5 +5,11 @@
 // Variables
 @import "variables";
 
-// Bootstrap
-@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+body{
+  background-color: $body-bg;
+}
+#gameContainer{
+  width: 100%;
+  height: 100%;
+  margin: auto;
+}

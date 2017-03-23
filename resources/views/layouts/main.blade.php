@@ -1,15 +1,11 @@
 <html>
     <head>
-        <title>App Name - @yield('title')</title>
+        <title>@yield('title')</title>
+        <script src="./js/jquery.js"></script>
+        <script src="./js/Game.js"></script>
+        <link href="./css/app.css"
     </head>
     <body>
-        @section('sidebar')
-            This is the master sidebar.
-        @show
-
-        <div class="container">
-            @yield('content')
-        </div>
+        @yield('gameDiv')
     </body>
-    @yield('script')
 </html>
