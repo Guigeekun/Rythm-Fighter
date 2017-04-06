@@ -6,6 +6,6 @@
         <link rel="stylesheet" type="text/css" href="./css/app.css"></link>
     </head>
     <body>
-        @yield('gameDiv')
+        @yield('body')
     </body>
 </html>

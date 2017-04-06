@@ -5,13 +5,22 @@
 // Variables
 @import "variables";
 
-body{
+body {
   background-color: $body-bg;
   padding: 0px;
   margin: 0px;
+  overflow: hidden;
 }
-
+form {
+  width: 100%;
+  > button{
+    display: block;
+    margin: 15% auto;
+    padding: 0 10px;
+  }
+}
 #rythmFighterBg{
+  z-index: -100;
   position: absolute;
   top: 0;
   left: 0;

@@ -6,7 +6,7 @@
 <script src="./js/game.js"></script>
 @stop
 
-@section('gameDiv')
+@section('body')
 <div id="rythmFighter">
   <img id="rythmFighterBg" src="./img/Background.png"></img>
 </div>
