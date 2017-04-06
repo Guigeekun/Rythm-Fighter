@@ -32,6 +32,8 @@ var gameHeight = 720*window.innerWidth/1280;
 var game = new Phaser.Game(gameWidth, gameHeight, Phaser.CANVAS, 'rythmFighter', { preload: preload, create: create, update: update, render: render }, true);
 
 function preload() {
+   document.getElementById("rythmFighterBg").style.height = gameHeight;
+   document.getElementById("rythmFighterBg").style.width = gameWidth;
    game.load.image('player1', 'img/_rocky/rocky01.png');
    game.load.image('player2', 'img/_ground/ground05.png');
    game.load.image('background', 'img/Background.png');
