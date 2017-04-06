@@ -9,5 +9,5 @@
 @stop
 
 @section('scripts')
-<script src="./js/game.js">
+<script src="./js/game.js"></script>
 @stop
