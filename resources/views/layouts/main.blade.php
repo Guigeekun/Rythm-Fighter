@@ -2,8 +2,8 @@
     <head>
         <title>@yield('title')</title>
         <script src="./js/jquery.js"></script>
-        <script src="./js/Game.js"></script>
-        <link href="./css/app.css"
+        @yield('scripts')
+        <link rel="stylesheet" type="text/css" href="./css/app.css"></link>
     </head>
     <body>
         @yield('gameDiv')

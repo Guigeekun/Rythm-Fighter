@@ -1,21 +1,27 @@
-
-var game = new Phaser.Game(1280, 720, Phaser.CANVAS, 'Rythm-Fighter', { preload: preload, create: create, update: update, render: render });
+var gameWidth = 1280*window.innerWidth/1280;
+var gameHeight = 720*window.innerWidth/1280;
+var game = new Phaser.Game(gameWidth, gameHeight, Phaser.CANVAS, 'rythmFighter', { preload: preload, create: create, update: update, render: render }, true);
 
 function preload() {
-   game.load.image('ground', 'img/_ground/ground05.png');
-   game.load.audio('song', ['public/audio/song/minami-JudgementStar.mp3', 'public/audio/song/minami-JudgementStar.ogg']);
+   game.load.image('player1', 'img/_rocky/rocky01.png');
+   game.load.image('player2', 'img/_ground/ground05.png');
+   game.load.image('background', 'img/Background.png');
+   game.load.audio('song', ['/audio/song/minami-JudgementStar.mp3', '/audio/song/minami-JudgementStar.ogg']);
 }
 
 var music
 
 function create() {
-  game.stage.backgroundColor = '#182d3b';
-//  game.add.sprite(640, 370, 'ground');
+  //load background and img
+  player1 = game.add.sprite(gameWidth/10, gameHeight/1.9, 'player1');
+  player2 = game.add.sprite(gameWidth/1.25, gameHeight/1.9, 'player2');
+
   game.input.touch.preventDefault = false;
   music = game.add.audio('song');
       music.play();
   game.input.onDown.add(changeVolume, this);
 }
+
 function changeVolume(pointer) {
 
     if (pointer.y < 100)
@@ -35,6 +41,8 @@ function changeVolume(pointer) {
 
 function update() {
 }
-function action_table()
+function action_table(){
+}
+function render(){
 }
 var v1 = 0

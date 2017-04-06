@@ -3,7 +3,8 @@
 @section('title', 'Rythm Fighter')
 
 @section('gameDiv')
-<div class="container" id="gameContainer">
+<div id="rythmFighter">
+  <img id="rythmFighterBg" src="./img/Background.png"></img>
 </div>
 @stop
 
