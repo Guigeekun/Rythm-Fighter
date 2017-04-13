@@ -20,8 +20,15 @@ function create() {
 
   game.input.touch.preventDefault = false;
   music = game.add.audio('song');
-      music.play();
-  game.input.onDown.add(changeVolume, this);
+  music.volume = 1;
+  music.play();
+
+//key map for music volume F1 & F2
+  keyVOLDOWN = game.input.keyboard.addKey(Phaser.Keyboard.F1);
+  keyVOLDOWN.onDown.add(VOLDOWN, this);
+
+  keyVOLUP = game.input.keyboard.addKey(Phaser.Keyboard.F2);
+  keyVOLUP.onDown.add(VOLUP, this);
 
 //key mapping maintenant faut remplir les fonctions et reflechir à comment on fait ^^
    keyDOWN1 = game.input.keyboard.addKey(Phaser.Keyboard.S);
@@ -36,7 +43,6 @@ function create() {
    keyUP1 = game.input.keyboard.addKey(Phaser.Keyboard.Z);
    keyUP1.onDown.add(UP1, this);
 //P1 mapping = Z,Q,S,D
-
    keyDOWN2 = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
    keyDOWN2.onDown.add(DOWN2, this);
 
@@ -52,21 +58,15 @@ function create() {
 
 }
 
-function changeVolume(pointer) {
-
-    if (pointer.y < 100)
-    {
-        music.mute = false;
-    }
-    else if (pointer.y < 300)
-    {
-        music.volume += 0.1;
-    }
-    else
-    {
-        music.volume -= 0.1;
-    }
-
+function VOLUP(){
+  if(music.volume <= 0.95){
+    music.volume += 0.05;
+  }else{music.volume = 1}
+}
+function VOLDOWN(){
+  if(music.volume >= 0.05){
+    music.volume -= 0.05;
+  }else{music.volume = 0}
 }
 
 function update() {
