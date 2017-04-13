@@ -40,3 +40,15 @@ On Windows you should use [Laragon](https://laragon.org/) it contains composer a
 ### Used
 
 This project use [Laravel](https://laravel.com/) and [Phaser.js](http://phaser.io/)
+
+
+### Dev notes
+## Mapping
+The player one use ZQSD (WASD for qwerty keyboard)
+The player two use UP LEFT DOWN RIGHT
+
+p1_action is the current action of the player filled with 1,2,3,4
+1 is for Z(W) / UP
+2 is for Q(A) / LEFT
+3 is for S    / DOWN
+4 is for D    / RIGHT
