@@ -1,76 +1,92 @@
-//Difficultés = 1: difficile 2: normal, 4: easy (pour un futur menu de selection.)
+//Difficulties = 1: Hard 2: normal, 4: easy (Selection menu in the future ?)
 var difficulty = 2;
 
-//On fabrique un tableau contenant des objets. Chaque objet est la caractéristique d'une musique avec son titre, son path vers son ogg/mp3 et son tempo/s
-var songs = [{title:"Judgement Star", pathMp3:'/audio/song/minami-JudgementStar.mp3', pathOgg:'/audio/song/minami-JudgementStar.ogg', tempo:1/(190.04/60)}];
-
-//Ratio en 16:9
+//Ration 16:9
 var gameWidth = 1280*window.innerWidth/1280;
 var gameHeight = 720*window.innerWidth/1280;
 
-//Création de la fenêtre du jeu
-var game = new Phaser.Game(gameWidth, gameHeight, Phaser.CANVAS, 'rythmFighter', { preload: preload, create: create}, true);
-var playList = [];
+//Music global variable
 var music;
 
-//Chargement des ressources et lancement de l'écran de chargement
+//Game window creation
+var game = new Phaser.Game(gameWidth, gameHeight, Phaser.CANVAS, 'rythmFighter', { preload: preload, create: create}, true);
+
+//load sprites and ressources
 function preload() {
+
+  //clear cache to prevent some decodeAudioData error (maybe ?)
+  game.cache.destroy();
+
+  //Loading state function
    game.load.onFileComplete.add(loading, this);
+
+   //add loading text
    text = game.add.text(gameWidth/3, gameHeight/2, 'Loading...', { fill:'#ffffff', size:"20" });
+
+   //Set background width and height
    document.getElementById("rythmFighterBg").style.height = gameHeight;
    document.getElementById("rythmFighterBg").style.width = gameWidth;
+
+   //Load game sprites, there will be more in the future
    game.load.image('player1', 'img/_rocky/rocky01.png');
    game.load.image('player2', 'img/_ground/ground05.png');
    game.load.image('background', 'img/Background.png');
-   $.each(songs, function(index, value){playList.push(value.pathMp3)});
-   game.load.audio('song', playList);
+
+   //Create music object and add song to playlist then load it in ogg format
+   music = new Music(Phaser.Keyboard.F1, Phaser.Keyboard.F2, 'song');
+   music.addSongs({title:"Judgement Star", pathMp3:'/audio/song/minami-JudgementStar.mp3', pathOgg:'/audio/song/minami-JudgementStar.ogg', tempo:1/(190.04/60), startAt:13.2}); //We add one song to the playlist
+   music.load("ogg", "Judgement Star");//We load a specific song in the game and we use the ogg format (can also be mp3)
 }
 
-//Affichage de l'écran de chargement et d ela progression
+//Loading screen display loop
 function loading(progress, cacheKey, success, totalLoaded, totalFiles){
   text.setText("Loading: " + progress + "% - " + totalLoaded + " out of " + totalFiles);
   $("#loadingBar").css("width", progress + "%");
 }
 
 function create() {
+  //Set text to "loading..." because we can't know the time the browser takes to decode the music
   text.setText("Loading...");
 
-  //Create player 1 & 2 with inputs
-  p1 = new player(Phaser.Keyboard.Q, Phaser.Keyboard.S, Phaser.Keyboard.D, Phaser.Keyboard.Z);
-  p2 = new player(Phaser.Keyboard.LEFT, Phaser.Keyboard.DOWN, Phaser.Keyboard.RIGHT, Phaser.Keyboard.UP);
+  //Create player 1 & 2 with inputs and sprites
+  p1 = new player(Phaser.Keyboard.Q, Phaser.Keyboard.S, Phaser.Keyboard.D, Phaser.Keyboard.Z, 'player1');
+  p2 = new player(Phaser.Keyboard.LEFT, Phaser.Keyboard.DOWN, Phaser.Keyboard.RIGHT, Phaser.Keyboard.UP, 'player2');
 
-  //Music set and volume control binding
-  music = game.add.audio('song');
-  music.volume = 1;
-  music.onDecoded.add(startGame, this);
-
-  keyVol = game.input.keyboard.addKeys({'down': Phaser.Keyboard.F1, 'up': Phaser.Keyboard.F2});
-  keyVol.down.onDown.add(function(){if(music.volume >= 0.1){music.volume -= 0.1;}else{music.volume = 0}}, this);
-  keyVol.up.onDown.add(function(){if(music.volume <= 0.9){music.volume += 0.1;}else{music.volume = 1}}, this);
-
+  //Decode music and callback function
+  music.decode(startGame);
 }
 
-//startGame se déclenche quand la musique est décodé par le navigateur
+//startGame run when the music is decoded by the browser
 function startGame(){
-  //Delete loading screen (loading bar and text)
+  //Delete loading bar and add player sprites on specific coordinates.
   $(".meter").remove();
+  p1.spawn(gameWidth/10, gameHeight/1.9);
+  p2.spawn(gameWidth/1.25, gameHeight/1.9);
 
-  //load background and img
-  player1 = game.add.sprite(gameWidth/10, gameHeight/1.9, 'player1');
-  player2 = game.add.sprite(gameWidth/1.25, gameHeight/1.9, 'player2');
-
-  //Start music and timer
+  //Start countdown, then music and timer
   countdown = 4;
-  game.time.events.repeat(1000, 4, function(){text.setText(countdown -= 1);}, this);
-  game.time.events.onComplete.add(function(){
-    text.destroy();
-    music.play();
-    game.time.events.loop(Phaser.Timer.SECOND*songs[0].tempo*difficulty, beatLoop, this);
+  countdownTimer = game.time.create()//Create a new timer called countdownTimer
+  countdownTimer.repeat(1000, 4, function(){text.setText(countdown -= 1);}, this);
+  countdownTimer.onComplete.add(function(){ //When countdown is finished, do that:
+    countdownTimer.destroy(); //kill the now useless countdownTimer
+    text.destroy(); //Remove the countdown text
+    music.startPlaying(0, 1, 5000, endGame); //Start music with fadeIn from volume 0 to 1 in 5 seconds (5000 ms)
+    beatLoopTimer = game.time.create(); //Create new timer for beatloop
+    beatLoopTimer.loop(Phaser.Timer.SECOND*music.playing().tempo*difficulty, beatLoop, this); //music.playing() return an object of the current playing song, then we get the tempo of it
+    beatLoopTimer.start(); //Start the beatLoopTimer when we finished setting it up
   });
+  countdownTimer.start(); //Start the countdownTimer when we finished setting it up
 }
-//Action à executer à chaque boucle de temps (change en fonction de la variable difficulty)
+
+//executed on each beat (change with difficulty)
 function beatLoop(){
-    console.log("Test"); //Pour test, un message est affiché en boucle dans la console
+  console.log("Test"); //Test message
+}
+
+//Executed when music end (or when a player reach 0 pv)
+function endGame(){
+  beatLoopTimer.destroy(); //kill the beatloop timer (or it will run even if the game has ended)
+  console.log('end');
 }
 
 function counter() {
