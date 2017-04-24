@@ -15,11 +15,4 @@
 @stop
 
 @section('scripts')
-<script>
-$(function(){
-  $('#rythmFighterBg').css('width', $(window).width())
-                  .css('height', $(window).height());
-});
-</script>
-
 @stop

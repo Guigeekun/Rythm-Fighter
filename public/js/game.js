@@ -31,17 +31,19 @@ this.video=document.createElement("video"),this.video.controls=!1,b&&this.video.
 var difficulty = 2;
 
 //Ration 16:9
-var gameWidth = 1280*window.innerWidth/1280;
-var gameHeight = 720*window.innerWidth/1280;
+var gameWidth;
+var gameHeight;
 
 //Music global variable
 var music;
 
 //Game window creation
-var game = new Phaser.Game(gameWidth, gameHeight, Phaser.CANVAS, 'rythmFighter', { preload: preload, create: create}, true);
+var game = new Phaser.Game("100", "100", Phaser.CANVAS, 'rythmFighter', { preload: preload, create: create}, true);
 
 //load sprites and ressources
 function preload() {
+  gameWidth = $("#rythmFighter").width();
+  gameHeight = $('#rythmFighter').height();
 
   //clear cache to prevent some decodeAudioData error (maybe ?)
   game.cache.destroy();
@@ -50,11 +52,7 @@ function preload() {
    game.load.onFileComplete.add(loading, this);
 
    //add loading text
-   text = game.add.text(gameWidth/3, gameHeight/2, 'Loading...', { fill:'#ffffff', size:"20" });
-
-   //Set background width and height
-   document.getElementById("rythmFighterBg").style.height = gameHeight;
-   document.getElementById("rythmFighterBg").style.width = gameWidth;
+   text = game.add.text(0, 0, 'Loading...', { fill:'#ffffff', size:"20" });
 
    //Load game sprites, there will be more in the future
    game.load.image('player1', 'img/_rocky/rocky01.png');
@@ -89,8 +87,8 @@ function create() {
 function startGame(){
   //Delete loading bar and add player sprites on specific coordinates.
   $(".meter").remove();
-  p1.spawn(gameWidth/10, gameHeight/1.9);
-  p2.spawn(gameWidth/1.25, gameHeight/1.9);
+  p1.spawn(gameWidth/11, gameHeight/1.9, gameWidth*0.01, gameWidth*0.01);
+  p2.spawn(gameWidth/1.25, gameHeight/1.9, gameWidth*0.01, gameWidth*0.01);
 
   //Start countdown, then music and timer
   countdown = 4;

@@ -22,8 +22,9 @@ class player {
     this.action = 0;
     this.stun = true;
   }
-  spawn(spawnX, spawnY){
+  spawn(spawnX, spawnY, width, height){
     this.sprite = game.add.sprite(spawnX, spawnY, this.spriteName); //Spawn the player sprite at given coordinates
+    this.sprite.scale.setTo(width*0.1, height*0.1);
   }
   //Return values (they're also realy obvious):
   pv(){
