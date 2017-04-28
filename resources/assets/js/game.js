@@ -40,6 +40,7 @@ function preload() {
 function loading(progress, cacheKey, success, totalLoaded, totalFiles){
   text.setText("Loading: " + progress + "% - " + totalLoaded + " out of " + totalFiles);
   $("#loadingBar").css("width", progress + "%");
+
 }
 
 function create() {
@@ -74,11 +75,31 @@ function startGame(){
     beatLoopTimer.start(); //Start the beatLoopTimer when we finished setting it up
   });
   countdownTimer.start(); //Start the countdownTimer when we finished setting it up
+
+  //Health bar
+//  	var barConfig = {x: gameWidth/16, y: gameHeight/20};
+//  	this.j1HealthBar = new HealthBar(this.game, barConfig);
 }
 
 //executed on each beat (change with difficulty)
 function beatLoop(){
   console.log("Test"); //Test message
+  console.log(p1.getPv());
+  console.log(p2.getPv());
+  if (p1.action==1){
+    //animation CAC pour J1 ici
+  }
+
+  if (p1.action==p2.action && p1.action!=0){
+      console.log("Blink")
+  }
+  if (p1.action==1 && p2.action==2){
+    p1.pvAdd(-10);
+  }
+  if (p1.action==2 && p2.action==1){
+    p1.pvAdd(-10);
+  }
+
 }
 
 //Executed when music end (or when a player reach 0 pv)
