@@ -1,9 +1,9 @@
 //Classe pour contruire les joueurs.
 class player {
   constructor(left, down, right, up, sprite){ //Create player object with inputs and sprite name that was loaded in preload
-    this.pv = 100;
-    this.stun = 0; //Number of turn the player is stunned
-    this.action = 0;
+    this._pv = 100;
+    this._stun = 0; //Number of turn the player is stunned
+    this._action = 0;
     this.inputs = game.input.keyboard.addKeys({'left': left, 'down': down, 'right': right, 'up': up});
     this.spriteName = sprite;
     this.inputs.up.onDown.add(this._up, this);
@@ -13,56 +13,56 @@ class player {
   }
   //Public methods (These are realy obvious, add more if you want ^^):
   pvAdd(value){
-    this.pv += value;
+    this._pv += value;
   }
   setStun(value){
-    this.stun = value;
+    this._stun = value;
   }
   counter(){
-    this.action = 0;
-    this.stun = true;
+    this._action = 0;
+    this._stun = true;
   }
   spawn(spawnX, spawnY, width, height){
     this.sprite = game.add.sprite(spawnX, spawnY, this.spriteName); //Spawn the player sprite at given coordinates
     this.sprite.scale.setTo(width*0.1, height*0.1);
   }
   //Return values (they're also realy obvious):
-  pv(){
-    return this.pv;
+  getPv(){
+    return this._pv;
   }
   timeOfStun(){
-    return this.stun;
+    return this._stun;
   }
   isStunned(){
-    if(this.stun <= 0){
+    if(this._stun <= 0){
       return false;
     }else{
       return true;
     }
   }
   action(){
-    return this.action;
+    return this._action;
   }
   //Private methods (underscore is a convention, even if it doesn't work in javascript ^^"):
   _left(){ //For now, it sets action value to the given command and prevent from changing it when the player is stunned
     if(!this.isStunned()){
-      this.action = 1;
-    }else{this.action = 0;}
+      this._action = 1;
+    }else{this._action = 0;}
   }
   _down(){
     if(!this.isStunned()){
-      this.action = 2;
-    }else{this.action = 0;}
+      this._action = 2;
+    }else{this._action = 0;}
   }
   _right(){
     if(!this.isStunned()){
-      this.action = 3;
-    }else{this.action = 0;}
+      this._action = 3;
+    }else{this._action = 0;}
   }
   _up(){
     if(!this.isStunned()){
-      this.action = 4;
-    }else{this.action = 0;}
+      this._action = 4;
+    }else{this._action = 0;}
   }
 }
 
