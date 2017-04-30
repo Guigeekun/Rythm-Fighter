@@ -107,9 +107,9 @@ function startGame(){
   countdownTimer.start(); //Start the countdownTimer when we finished setting it up
 
   //Health bar j1
-  var bmd = game.add.bitmapData(100,40);
+  var bmd = game.add.bitmapData(300,40);
            bmd.ctx.beginPath();
-           bmd.ctx.rect(0,0,300,30);
+           bmd.ctx.rect(0,0,600,30);
            bmd.ctx.fillStyle = '#00685e';
            bmd.ctx.fill();
 
@@ -117,9 +117,9 @@ function startGame(){
            healthBarJ1.anchor.y = 0.5;
 
 //Health bar j2
-var bmd2 = game.add.bitmapData(100,40);
+var bmd2 = game.add.bitmapData(300,40);
           bmd2.ctx.beginPath();
-          bmd2.ctx.rect(0,0,300,30);
+          bmd2.ctx.rect(0,0,600,30);
           bmd2.ctx.fillStyle = '#00685e';
           bmd2.ctx.fill();
 
@@ -139,7 +139,6 @@ function beatLoop(){
 
   barWidthJ2 = healthBarJ2.width;
     healthBarJ2.width = p2.getPv() * 2;
-
 
   if (p1.action==1){
     //animation CAC pour J1 ici
