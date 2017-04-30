@@ -1,7 +1,7 @@
 //Classe pour contruire les joueurs.
 class player {
   constructor(left, down, right, up, sprite){ //Create player object with inputs and sprite name that was loaded in preload
-    this._pv = 100;
+    this._pv = 150;
     this._stun = 0; //Number of turn the player is stunned
     this._action = 0;
     this.inputs = game.input.keyboard.addKeys({'left': left, 'down': down, 'right': right, 'up': up});

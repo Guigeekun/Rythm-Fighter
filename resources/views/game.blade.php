@@ -3,6 +3,7 @@
 @section('title', 'Rythm Fighter')
 
 @section('scripts')
+<script src="./js/HealthBar.js"></script>
 <script src="./js/gameClass.js"></script>
 <script src="./js/game.js"></script>
 @stop

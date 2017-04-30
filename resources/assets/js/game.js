@@ -11,6 +11,7 @@ var music;
 //Game window creation
 var game = new Phaser.Game("100", "100", Phaser.CANVAS, 'rythmFighter', { preload: preload, create: create}, true);
 
+
 //load sprites and ressources
 function preload() {
   gameWidth = $("#rythmFighter").width();
@@ -76,16 +77,40 @@ function startGame(){
   });
   countdownTimer.start(); //Start the countdownTimer when we finished setting it up
 
-  //Health bar
-//  	var barConfig = {x: gameWidth/16, y: gameHeight/20};
-//  	this.j1HealthBar = new HealthBar(this.game, barConfig);
-}
+  //Health bar j1
+  var bmd = game.add.bitmapData(100,40);
+           bmd.ctx.beginPath();
+           bmd.ctx.rect(0,0,600,30);
+           bmd.ctx.fillStyle = '#00685e';
+           bmd.ctx.fill();
 
+           healthBarJ1 = game.add.sprite(100,100,bmd);
+           healthBarJ1.anchor.y = 0.5;
+
+//Health bar j2
+var bmd2 = game.add.bitmapData(100,40);
+          bmd2.ctx.beginPath();
+          bmd2.ctx.rect(0,0,600,30);
+          bmd2.ctx.fillStyle = '#00685e';
+          bmd2.ctx.fill();
+
+          healthBarJ2 = game.add.sprite(gameWidth-400,100,bmd2);
+          healthBarJ2.anchor.y = 0.5;
+
+}
 //executed on each beat (change with difficulty)
 function beatLoop(){
   console.log("Test"); //Test message
   console.log(p1.getPv());
   console.log(p2.getPv());
+
+//health bar update
+  barWidthJ1 = healthBarJ1.width;
+    healthBarJ1.width = p1.getPv() * 2;
+
+  barWidthJ2 = healthBarJ2.width;
+    healthBarJ2.width = p2.getPv() * 2;
+
   if (p1.action==1){
     //animation CAC pour J1 ici
   }
