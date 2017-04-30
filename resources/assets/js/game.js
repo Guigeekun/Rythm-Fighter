@@ -66,7 +66,11 @@ function startGame(){
   //Start countdown, then music and timer
   countdown = 4;
   countdownTimer = game.time.create()//Create a new timer called countdownTimer
-  countdownTimer.repeat(1000, 4, function(){text.setText(countdown -= 1);}, this);
+  countdownTimer.repeat(1000, 4, function(){text.setText(countdown -= 1);
+     
+     text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
+      //  We'll set the bounds to be from x0, y100 and be 800px wide by 100px high
+      text.setTextBounds(0, 100, gameWidth, gameHeight);}, this);
   countdownTimer.onComplete.add(function(){ //When countdown is finished, do that:
     countdownTimer.destroy(); //kill the now useless countdownTimer
     text.destroy(); //Remove the countdown text
@@ -78,20 +82,37 @@ function startGame(){
   countdownTimer.start(); //Start the countdownTimer when we finished setting it up
 
   //Health bar j1
+  var graphicsJ1 = game.add.bitmapData(350, 40);
+     graphicsJ1.ctx.beginPath();
+     graphicsJ1.fillStyle = '#FF9900';
+     graphicsJ1.ctx.rect(0,0,350,40);
+     graphicsJ1.ctx.fillStyle = '#FF9900';
+     graphicsJ1.ctx.fill();
+     healthBarGraJ1 = game.add.sprite(75,75,graphicsJ1);
+
   var bmd = game.add.bitmapData(300,40);
            bmd.ctx.beginPath();
            bmd.ctx.rect(0,0,600,30);
-           bmd.ctx.fillStyle = '#00685e';
+           bmd.ctx.fillStyle = '#80FF00';
            bmd.ctx.fill();
 
            healthBarJ1 = game.add.sprite(100,100,bmd);
            healthBarJ1.anchor.y = 0.5;
 
+
 //Health bar j2
+var graphicsJ1 = game.add.bitmapData(350, 40);
+   graphicsJ1.ctx.beginPath();
+   graphicsJ1.fillStyle = '#FF9900';
+   graphicsJ1.ctx.rect(0,0,350,40);
+   graphicsJ1.ctx.fillStyle = '#FF9900';
+   graphicsJ1.ctx.fill();
+   healthBarGraJ1 = game.add.sprite(gameWidth-425,75,graphicsJ1);
+
 var bmd2 = game.add.bitmapData(300,40);
           bmd2.ctx.beginPath();
           bmd2.ctx.rect(0,0,600,30);
-          bmd2.ctx.fillStyle = '#00685e';
+          bmd2.ctx.fillStyle = '#80FF00';
           bmd2.ctx.fill();
 
           healthBarJ2 = game.add.sprite(gameWidth-400,100,bmd2);
@@ -106,15 +127,30 @@ function beatLoop(){
 
 //health bar update
   barWidthJ1 = healthBarJ1.width;
-    healthBarJ1.width = p1.getPv() * 2;
+  if (p1.getPv()<=100){
+    healthBarJ1.tint = 0xC5C542;
+  }
+  if (p1.getPv()<=50){
+    healthBarJ1.tint = 0xdf0101;
+  }
+  healthBarJ1.width = p1.getPv() * 2;
 
   barWidthJ2 = healthBarJ2.width;
-    healthBarJ2.width = p2.getPv() * 2;
+  if (p2.getPv()<=100){
+    healthBarJ2.tint = 0xC5C542;
+  }
+  if (p2.getPv()<=50){
+    healthBarJ2.tint = 0xdf0101;
+  }
+  healthBarJ2.width = p2.getPv() * 2;
 
+//animation
   if (p1.action==1){
     //animation CAC pour J1 ici
   }
 
+
+//battle system
   if (p1.action==p2.action && p1.action!=0){
       console.log("Blink")
   }
