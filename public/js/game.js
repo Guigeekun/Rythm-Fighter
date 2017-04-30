@@ -99,7 +99,11 @@ function startGame(){
   //Start countdown, then music and timer
   countdown = 4;
   countdownTimer = game.time.create()//Create a new timer called countdownTimer
-  countdownTimer.repeat(1000, 4, function(){text.setText(countdown -= 1);}, this);
+  countdownTimer.repeat(1000, 4, function(){text.setText(countdown -= 1);
+     text.centerOn(gameWidth,gameHeight);
+     text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
+      //  We'll set the bounds to be from x0, y100 and be 800px wide by 100px high
+      text.setTextBounds(0, 100, gameWidth, gameHeight);}, this);
   countdownTimer.onComplete.add(function(){ //When countdown is finished, do that:
     countdownTimer.destroy(); //kill the now useless countdownTimer
     text.destroy(); //Remove the countdown text
@@ -122,6 +126,8 @@ function beatLoop(){
     //animation CAC pour J1 ici
   }
 
+
+//battle system
   if (p1.action==p2.action && p1.action!=0){
       console.log("Blink")
   }
