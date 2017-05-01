@@ -100,7 +100,7 @@ function startGame(){
   countdown = 4;
   countdownTimer = game.time.create()//Create a new timer called countdownTimer
   countdownTimer.repeat(1000, 4, function(){text.setText(countdown -= 1);
-     text.centerOn(gameWidth,gameHeight);
+
      text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
       //  We'll set the bounds to be from x0, y100 and be 800px wide by 100px high
       text.setTextBounds(0, 100, gameWidth, gameHeight);}, this);
@@ -120,11 +120,9 @@ function beatLoop(){
   console.log("Test"); //Test message
   console.log(p1.getPv());
   console.log(p2.getPv());
+p1.playAnimation();
+p2.playAnimation();
 
-
-  if (p1.action==1){
-    //animation CAC pour J1 ici
-  }
 
 
 //battle system

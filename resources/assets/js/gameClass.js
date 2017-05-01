@@ -13,7 +13,9 @@ class player {
   }
   //Public methods (These are realy obvious, add more if you want ^^):
   addPv(value){
+    //play animation when you get hit
     this._pv += value;
+    new Tween(healthBar, game, manager) 
     if(this._pv > 0){
       this.healthBar.width = this.getPv()/150 * this.bmd.width;
     }else {
@@ -66,6 +68,17 @@ class player {
     if(reversed){
       this.healthBar.angle =180;
       this.healthBarBg.angle =180;
+    }
+  }
+  playAnimation(){
+    if(this.action==1){
+      //play animation CAC
+    }
+    if(this.action==2){
+      //play animation CAST
+    }
+    if(this.action==3){
+      //play animation PRD
     }
   }
   //Return values (they're also realy obvious):
