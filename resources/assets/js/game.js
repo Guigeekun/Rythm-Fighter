@@ -95,16 +95,15 @@ p1.playAnimation();
 p2.playAnimation();
 
 
-
 //battle system
   if (p1.action==p2.action && p1.action!=0){
       console.log("Blink")
   }
   if (p1.action==1 && p2.action==2){
-    p1.pvAdd(-10);
+    p1.addPv(-10);
   }
   if (p1.action==2 && p2.action==1){
-    p1.pvAdd(-10);
+    p1.addPv(-10);
   }
 
 }

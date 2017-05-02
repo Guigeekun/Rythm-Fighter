@@ -15,9 +15,8 @@ class player {
   addPv(value){
     //play animation when you get hit
     this._pv += value;
-    new Tween(healthBar, game, manager) 
     if(this._pv > 0){
-      this.healthBar.width = this.getPv()/150 * this.bmd.width;
+      game.add.tween(this.healthBar).to({width: (this.getPv()*this.bmd2.width)/150}, 300, Phaser.Easing.Linear.None, true);
     }else {
       this.healthBar.destroy();
     }
