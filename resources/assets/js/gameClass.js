@@ -1,12 +1,12 @@
 //Classe pour contruire les joueurs.
 class player {
-  constructor(left, down, right, up, sprite){ //Create player object with inputs and sprite name that was loaded in preload
+  constructor(left, down, right, sprite, reversed){ //Create player object with inputs and sprite name that was loaded in preload
     this._pv = 150;
-    this._stun = 0; //Number of turn the player is stunned
+    this._combo = false;
     this._action = 0;
-    this.inputs = game.input.keyboard.addKeys({'left': left, 'down': down, 'right': right, 'up': up});
+    this.reversed = reversed || false;
+    this.inputs = game.input.keyboard.addKeys({'left': left, 'down': down, 'right': right});
     this.spriteName = sprite;
-    this.inputs.up.onDown.add(this._up, this);
     this.inputs.down.onDown.add(this._down, this);
     this.inputs.left.onDown.add(this._left, this);
     this.inputs.right.onDown.add(this._right, this);
@@ -17,37 +17,34 @@ class player {
     this._pv += value;
     if(this._pv > 0){
       game.add.tween(this.healthBar).to({width: (this.getPv()*this.bmd2.width)/150}, 300, Phaser.Easing.Linear.None, true);
+      if(this._pv >= 80*150/100){
+        this.bmd.ctx.fillStyle = '#80FF00';
+        this.bmd.ctx.fill();
+      }else if (this._pv >= 30*150/100){
+        this.bmd.ctx.fillStyle = '#FFFF00';
+        this.bmd.ctx.fill();
+      }else{
+        this.bmd.ctx.fillStyle = '#DF0101';
+        this.bmd.ctx.fill();
+      }
     }else {
       this.healthBar.destroy();
-    }
-    if(this._pv >= 80*150/100){
-      this.bmd.ctx.fillStyle = '#80FF00';
-      this.bmd.ctx.fill();
-    }else if (this._pv >= 30*150/100){
-      this.bmd.ctx.fillStyle = '#FFFF00';
-      this.bmd.ctx.fill();
-    }else{
-      this.bmd.ctx.fillStyle = '#DF0101';
-      this.bmd.ctx.fill();
+      return endGame();
     }
   }
-  setStun(value){
-    this._stun = value;
+  setCombo(value){
+    this._combo = value;
   }
-  counter(){
-    this._action = 0;
-    this._stun = true;
-  }
-  spawn(spawnX, spawnY, width, height, reversed){
+  spawn(spawnX, spawnY, width, height){
     this.sprite = game.add.sprite(spawnX, spawnY, this.spriteName); //Spawn the player sprite at given coordinates
-    if(reversed){
+    if(this.reversed){
       this.sprite.anchor.setTo(1, 1);
     }else{
       this.sprite.anchor.setTo(0, 1);
     }
     this.sprite.scale.setTo(width*0.1, height*0.1);
   }
-  spawnHealthBar(barWidth, barHeight, x, y, reversed){
+  spawnHealthBar(barWidth, barHeight, x, y){
     //Create Bitmap images
     this.bmd = game.add.bitmapData(barWidth,barHeight);
     this.bmd.ctx.beginPath();
@@ -64,59 +61,67 @@ class player {
     this.healthBarBg.anchor.y = 0.5;
     this.healthBar = game.add.sprite(x,y,this.bmd);
     this.healthBar.anchor.y = 0.5;
-    if(reversed){
+    if(this.reversed){
       this.healthBar.angle =180;
       this.healthBarBg.angle =180;
     }
   }
   playAnimation(){
-    if(this.action==1){
+    if(this._action == 1){
       //play animation CAC
     }
-    if(this.action==2){
+    if(this._action == 2){
       //play animation CAST
     }
-    if(this.action==3){
+    if(this._action == 3){
       //play animation PRD
     }
+  }
+  actionReset(){
+    this._action = 0;
   }
   //Return values (they're also realy obvious):
   getPv(){
     return this._pv;
   }
-  timeOfStun(){
-    return this._stun;
-  }
-  isStunned(){
-    if(this._stun <= 0){
-      return false;
-    }else{
-      return true;
-    }
-  }
-  action(){
+  getAction(){
     return this._action;
   }
+  isCombo(){
+    return this._combo;
+  }
   //Private methods (underscore is a convention, even if it doesn't work in javascript ^^"):
-  _left(){ //For now, it sets action value to the given command and prevent from changing it when the player is stunned
-    if(!this.isStunned()){
-      this._action = 1;
-    }else{this._action = 0;}
+  //1: CAC    2: CAST    3: GUARD
+  _left(){
+    if(this._action == 0){
+      if(this.reversed){
+        this._action = 1;
+      }else{
+        if(this._combo){
+          this._action = 0;
+        }else{
+          this._action = 3;
+        }
+      }
+    }
   }
   _down(){
-    if(!this.isStunned()){
+    if(this._action == 0){
       this._action = 2;
-    }else{this._action = 0;}
+    }
   }
   _right(){
-    if(!this.isStunned()){
-      this._action = 3;
-    }else{this._action = 0;}
-  }
-  _up(){
-    if(!this.isStunned()){
-      this._action = 4;
-    }else{this._action = 0;}
+    if(this._action == 0){
+      if(this.reversed){
+        if(this._combo){
+          this._action = 0;
+        }else{
+          this._action = 3;
+        }
+      }else{
+        this._action = 1;
+      }
+    }
   }
 }
 

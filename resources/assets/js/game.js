@@ -1,7 +1,6 @@
 //Difficulties = 1: Hard 2: normal, 4: easy (Selection menu in the future ?)
 var difficulty = 2;
-
-//Ration 16:9
+var counterTime = false;
 var gameWidth;
 var gameHeight;
 
@@ -48,8 +47,8 @@ function create() {
   text.setText("Loading...");
 
   //Create player 1 & 2 with inputs and sprites
-  p1 = new player(Phaser.Keyboard.Q, Phaser.Keyboard.S, Phaser.Keyboard.D, Phaser.Keyboard.Z, 'player1');
-  p2 = new player(Phaser.Keyboard.LEFT, Phaser.Keyboard.DOWN, Phaser.Keyboard.RIGHT, Phaser.Keyboard.UP, 'player2');
+  p1 = new player(Phaser.Keyboard.Q, Phaser.Keyboard.S, Phaser.Keyboard.D, 'player1');
+  p2 = new player(Phaser.Keyboard.LEFT, Phaser.Keyboard.DOWN, Phaser.Keyboard.RIGHT, 'player2', true);
 
   //Decode music and callback function
   music.decode(startGame);
@@ -60,12 +59,12 @@ function startGame(){
 
   //Delete loading bar and add player sprites on specific coordinates.
   $(".meter").remove();
-  p1.spawn(gameWidth*0.165, gameHeight*0.8, gameWidth*0.01, gameWidth*0.01, false);
-  p2.spawn(gameWidth*0.835, gameHeight*0.8, gameWidth*0.01, gameWidth*0.01, true);
+  p1.spawn(gameWidth*0.165, gameHeight*0.8, gameWidth*0.01, gameWidth*0.01);
+  p2.spawn(gameWidth*0.835, gameHeight*0.8, gameWidth*0.01, gameWidth*0.01);
 
   //Health bars
-  p1.spawnHealthBar(gameWidth*0.33, gameHeight*0.05, gameWidth*0.0825, gameHeight*0.1, false);
-  p2.spawnHealthBar(gameWidth*0.33, gameHeight*0.05, gameWidth*0.9175, gameHeight*0.1, true);
+  p1.spawnHealthBar(gameWidth*0.33, gameHeight*0.05, gameWidth*0.0825, gameHeight*0.1);
+  p2.spawnHealthBar(gameWidth*0.33, gameHeight*0.05, gameWidth*0.9175, gameHeight*0.1);
 
   //Start countdown, then music and timer
   countdown = 4;
@@ -80,7 +79,7 @@ function startGame(){
     text.destroy(); //Remove the countdown text
     music.startPlaying(0, 1, 5000, endGame); //Start music with fadeIn from volume 0 to 1 in 5 seconds (5000 ms)
     beatLoopTimer = game.time.create(); //Create new timer for beatloop
-    beatLoopTimer.loop(Phaser.Timer.SECOND*music.playing().tempo*difficulty, beatLoop, this); //music.playing() return an object of the current playing song, then we get the tempo of it
+    beatLoopTimer.loop(Phaser.Timer.SECOND*music.playing().tempo*difficulty/2, beatLoop, this); //music.playing() return an object of the current playing song, then we get the tempo of it
     beatLoopTimer.start(); //Start the beatLoopTimer when we finished setting it up
   });
   countdownTimer.start(); //Start the countdownTimer when we finished setting it up
@@ -88,33 +87,41 @@ function startGame(){
 }
 //executed on each beat (change with difficulty)
 function beatLoop(){
-  console.log("Test"); //Test message
-  console.log(p1.getPv());
-  console.log(p2.getPv());
-p1.playAnimation();
-p2.playAnimation();
+  p1Action = p1.getAction();
+  p2Action = p2.getAction();
 
-
-//battle system
-  if (p1.action==p2.action && p1.action!=0){
-      console.log("Blink")
+  if(!counterTime){
+    p1.playAnimation();
+    p2.playAnimation();
+    //battle system
+    if (p1Action != 0 || p2Action != 0 ){
+      if(p1Action == p2Action && p1Action != 3 && p2Action != 3){
+        console.log("blink");
+      }else if ((p1Action == 1 && (p2Action == 2 || p2Action == 0)) || (p1Action == 2 && (p2Action == 3 || p2Action == 0)) || (p1Action == 3 && (p2Action == 2 || p2Action == 0))){
+        p2.addPv(-10);
+        p1.setCombo(true);
+        p1.actionReset();
+      }else if ((p2Action == 1 && (p1Action == 2 || p1Action == 0)) || (p2Action == 2 && (p1Action == 3 || p1Action == 0)) || (p1Action == 3 && (p2Action == 2 || p1Action == 0))){
+        p1.addPv(-10);
+        p2.setCombo(true);
+        p2.actionReset();
+      }
+    }
+    counterTime = true;
+  }else {
+    if(p1Action != 0 && p1.isCombo()){
+      p2.addPv(-5);
+    }else if (p2Action != 0 && p2.isCombo()) {
+      p1.addPv(-5);
+    }
+    p1.actionReset();
+    p2.actionReset();
+    counterTime = false;
   }
-  if (p1.action==1 && p2.action==2){
-    p1.addPv(-10);
-  }
-  if (p1.action==2 && p2.action==1){
-    p1.addPv(-10);
-  }
-
 }
 
 //Executed when music end (or when a player reach 0 pv)
 function endGame(){
   beatLoopTimer.destroy(); //kill the beatloop timer (or it will run even if the game has ended)
   console.log('end');
-}
-
-function counter() {
-  p1.counter();
-  p2.counter();
 }
