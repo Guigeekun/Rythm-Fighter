@@ -3,7 +3,8 @@ var difficulty = 2;
 var counterTime = 1;
 var gameWidth;
 var gameHeight;
-var ended = true;
+var p1WinCounter;
+var p2WinCounter;
 
 //Music global variable
 var music;
@@ -31,6 +32,10 @@ function preload() {
   game.load.spritesheet('player1', 'img/spritesheet p1.png', 267, 185);
   game.load.spritesheet('player2', 'img/spritesheet p2.png', 267, 185);
   game.load.image('background', 'img/Background.png');
+
+  game.load.image('cacIcon', 'img/icon/cac-icon.png');
+  game.load.image('castIcon', 'img/icon/cast-icon.png');
+
 
   //Create music object and add song to playlist then load it in ogg format
   music = new Music(Phaser.Keyboard.F1, Phaser.Keyboard.F2, 'song');
@@ -66,9 +71,16 @@ function startGame(){
   p1.spawn(gameWidth*0.165, gameHeight*0.82, gameWidth*0.5, gameHeight*0.5);
   p2.spawn(gameWidth*0.835, gameHeight*0.82, gameWidth*0.5, gameHeight*0.5);
 
+
   //Health bars
   p1.spawnHealthBar(gameWidth*0.33, gameHeight*0.05, gameWidth*0.0825, gameHeight*0.1);
   p2.spawnHealthBar(gameWidth*0.33, gameHeight*0.05, gameWidth*0.9175, gameHeight*0.1);
+
+  //Icon j1
+var iconCacJ1 = game.add.sprite(gameWidth*0.30, gameHeight*0.8, 'cacIcon');
+var iconCastJ1 = game.add.sprite(gameWidth*0,20, gameHeight*0.8, 'castIcon');
+iconCacJ1.scale.setTo(0.2, 0.2);
+iconCastJ1.scale.setTo(0.35, 0.35);
 
   //Start countdown, then music and timer
   countdown = 4;
@@ -79,9 +91,8 @@ function startGame(){
   //  We'll set the bounds to be from x0, y100 and be 800px wide by 100px high
   text.setTextBounds(0, 100, gameWidth, gameHeight);}, this);
   countdownTimer.onComplete.add(function(){ //When countdown is finished, do that:
-    ended = false;
     countdownTimer.destroy(); //kill the now useless countdownTimer
-    text.setText(""); //Remove the countdown text
+    text.destroy(); //Remove the countdown text
     music.startPlaying(0, 1, 5000, endGame); //Start music with fadeIn from volume 0 to 1 in 5 seconds (5000 ms)
     beatLoopTimer = game.time.create(); //Create new timer for beatloop
     beatLoopTimer.loop(Phaser.Timer.SECOND*music.playing().tempo*difficulty/2, beatLoop, this); //music.playing() return an object of the current playing song, then we get the tempo of it
@@ -91,8 +102,10 @@ function startGame(){
 }
 
 function reStartGame(){
-  p1.reset();
-  p2.reset();
+  p1.resetPv();
+  p2.resetPv();
+  p1.actionReset();
+  p2.actionReset();
   countdown = 4;
   countdownTimer = game.time.create();//Create a new timer called countdownTimer
   countdownTimer.repeat(1000, 4, function(){text.setText(countdown -= 1);
@@ -106,9 +119,10 @@ function reStartGame(){
     p2.actionReset();
     p1.setCombo(false);
     p2.setCombo(false);
+
     countdownTimer.destroy(); //kill the now useless countdownTimer
-    text.setText(""); //Remove the countdown text
-    music.startPlaying(0, 1, 5000, endGame, true); //Start music with fadeIn from volume 0 to 1 in 5 seconds (5000 ms)
+    text.destroy(); //Remove the countdown text
+    music.startPlaying(0, 1, 5000, endGame); //Start music with fadeIn from volume 0 to 1 in 5 seconds (5000 ms)
     beatLoopTimer = game.time.create(); //Create new timer for beatloop
     beatLoopTimer.loop(Phaser.Timer.SECOND*music.playing().tempo*difficulty/2, beatLoop, this); //music.playing() return an object of the current playing song, then we get the tempo of it
     beatLoopTimer.start(); //Start the beatLoopTimer when we finished setting it up
@@ -118,9 +132,6 @@ function reStartGame(){
 
 //executed on each beat (change with difficulty)
 function beatLoop(){
-  if(ended){
-    return "Lock state";
-  }
   p1Action = p1.getAction();
   p2Action = p2.getAction();
 
@@ -133,11 +144,11 @@ function beatLoop(){
         counterTime += 2;
         p1.actionReset();
         p2.actionReset();
-      }else if ((p1Action == 1 && (p2Action == 2 || p2Action == 0)) || (p1Action == 2 && (p2Action == 3 || p2Action == 0)) || (p1Action == 3 && p2Action == 1)){
+      }else if ((p1Action == 1 && (p2Action == 2 || p2Action == 0)) || (p1Action == 2 && (p2Action == 3 || p2Action == 0)) || (p1Action == 3 && (p2Action == 1 || p2Action == 0))){
         p2.addPv(-10);
         p1.setCombo(true);
         p1.actionReset();
-      }else if ((p2Action == 1 && (p1Action == 2 || p1Action == 0)) || (p2Action == 2 && (p1Action == 3 || p1Action == 0)) || (p2Action == 3 && p1Action == 1)){
+      }else if ((p2Action == 1 && (p1Action == 2 || p1Action == 0)) || (p2Action == 2 && (p1Action == 3 || p1Action == 0)) || (p2Action == 3 && (p1Action == 1 || p1Action == 0))){
         p1.addPv(-10);
         p2.setCombo(true);
         p2.actionReset();
@@ -160,15 +171,13 @@ function beatLoop(){
 
 //Executed when music end (or when a player reach 0 pv)
 function endGame(){
-  if(!ended){
-    ended = true;
-    beatLoopTimer.destroy(); //kill the beatloop timer (or it will run even if the game has ended)
-    music.endMusic();
-    if (p1.getPv() <= p2.getPv()){
-      p2.addWin();
-    }else{
-      p1.addWin();
-    }
-    reStartGame();
+  beatLoopTimer.destroy(); //kill the beatloop timer (or it will run even if the game has ended)
+  music.player.pause();
+  console.log('end');
+  if (p1.getPv() <= p2.getPv()){
+    p2.addWin();
+  }else{
+    p1.addWin();
   }
+reStartGame();
 }
