@@ -29,8 +29,8 @@ function preload() {
   text.anchor.setTo(0.5, 0.5)
 
   //Load game sprites, there will be more in the future
-  game.load.image('player1', 'img/_rocky/rocky01.png');
-  game.load.image('player2', 'img/_ground/ground05.png');
+  game.load.spritesheet('player1', 'img/spritesheet p1.png', 267, 185);
+  game.load.spritesheet('player2', 'img/spritesheet p2.png', 267, 185);
   game.load.image('background', 'img/Background.png');
 
   game.load.image('cacIcon', 'img/icon/cac-icon.png');
@@ -68,8 +68,9 @@ function startGame(){
 
   //Delete loading bar and add player sprites on specific coordinates.
   $(".meter").remove();
-  p1.spawn(gameWidth*0.165, gameHeight*0.8, gameWidth*0.01, gameWidth*0.01);
-  p2.spawn(gameWidth*0.835, gameHeight*0.8, gameWidth*0.01, gameWidth*0.01);
+  p1.spawn(gameWidth*0.165, gameHeight*0.82, gameWidth*0.5, gameHeight*0.5);
+  p2.spawn(gameWidth*0.835, gameHeight*0.82, gameWidth*0.5, gameHeight*0.5);
+
 
   //Health bars
   p1.spawnHealthBar(gameWidth*0.33, gameHeight*0.05, gameWidth*0.0825, gameHeight*0.1);
@@ -113,6 +114,12 @@ function reStartGame(){
   //  We'll set the bounds to be from x0, y100 and be 800px wide by 100px high
   text.setTextBounds(0, 100, gameWidth, gameHeight);}, this);
   countdownTimer.onComplete.add(function(){ //When countdown is finished, do that:
+    ended = false;
+    p1.actionReset();
+    p2.actionReset();
+    p1.setCombo(false);
+    p2.setCombo(false);
+
     countdownTimer.destroy(); //kill the now useless countdownTimer
     text.destroy(); //Remove the countdown text
     music.startPlaying(0, 1, 5000, endGame); //Start music with fadeIn from volume 0 to 1 in 5 seconds (5000 ms)

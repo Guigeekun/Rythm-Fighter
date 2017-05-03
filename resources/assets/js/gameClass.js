@@ -6,9 +6,9 @@ class player {
     this._combo = false;
     this._action = -1;
     this._win = 0;
+    this.spriteName = sprite;
     this.reversed = reversed || false;
     this.inputs = game.input.keyboard.addKeys({'left': left, 'down': down, 'right': right});
-    this.spriteName = sprite;
     this.inputs.down.onDown.add(this._down, this);
     this.inputs.left.onDown.add(this._left, this);
     this.inputs.right.onDown.add(this._right, this);
@@ -18,6 +18,7 @@ class player {
     //play animation when you get hit
     this._pv += value;
     if(this._pv > 0){
+      this.anim.damage.play().onComplete.add(function(){this.anim.static.play("", true)}, this);
       game.add.tween(this.healthBar).to({width: (this.getPv()*this.bmd2.width)/this._maxPv}, 200, Phaser.Easing.Linear.None, true);
       if(this._pv >= 80/100*this._maxPv){
         this.bmd.ctx.fillStyle = '#80FF00';
@@ -31,6 +32,7 @@ class player {
       }
     }else {
       this.healthBar.width = 0;
+      this.anim.death.play().onComplete.add(function(){this.anim.spawn.play().onComplete.add(function(){this.anim.static.play("", true)}, this)}, this);
       return endGame();
     }
   }
@@ -45,8 +47,18 @@ class player {
     }else{
       this.sprite.anchor.setTo(0, 1);
     }
-    this.sprite.scale.setTo(width, height);
+    this.sprite.width = width;
+    this.sprite.height = height;
+    this.anim = {'static': this.sprite.animations.add('statique' + this.spriteName, [0, 1, 2, 3], 7),
+    'damage': this.sprite.animations.add('damage' + this.spriteName,[17], 15),
+    'death': this.sprite.animations.add('death' + this.spriteName,[51,52,53,54,55,56,57,58,59], 12.67),
+    'spawn': this.sprite.animations.add('death' + this.spriteName,[59,58,57,56,55,54,53,52,51], 12.67),
+    'cac': this.sprite.animations.add('cac' + this.spriteName, [68,69,70,71,72,73,74,75,76,77,78,79,80,81], 22.17),
+    'cast': this.sprite.animations.add('cast' + this.spriteName, [85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101], 26.92),
+    'def': this.sprite.animations.add('def' + this.spriteName, [102,103,104,105,106,107,108,109,110,111,112,113], 19)}
+    this.anim.static.play("", true);
   }
+
   spawnHealthBar(barWidth, barHeight, x, y){
     //Create Bitmap images
     this.winCounter = game.add.text(x, y - barHeight/2, "Win : " + this._win,{ fill:'#ffffff', size:gameWidth*0.01 });
@@ -72,20 +84,14 @@ class player {
     }
   }
   playAnimation(){
-    switch(this.getAction()){
-   case 0:
-  
-   case 1:
-      //play animation CAC
-      break;
-   case  2:
-
-      //play animation CAST
-      break;
-    case 3:
-
-      //play animation PRD
-      break;
+    if(this._action == 1){
+      this.anim.cac.play().onComplete.add(function(){this.anim.static.play("", true)}, this);
+    }
+    if(this._action == 2){
+      this.anim.cast.play().onComplete.add(function(){this.anim.static.play("", true)}, this);
+    }
+    if(this._action == 3){
+      this.anim.def.play().onComplete.add(function(){this.anim.static.play("", true)}, this);
     }
   }
   addWin(){
