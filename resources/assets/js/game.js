@@ -156,13 +156,12 @@ function beatLoop(){
 function endGame(){
   beatLoopTimer.destroy(); //kill the beatloop timer (or it will run even if the game has ended)
   music.player.pause();
-  music.player.destroy();
   console.log('end');
   text = game.add.text(gameWidth*0.5, gameHeight*0.5, 'End', { fill:'#ffffff', size:"20" });
-  if (p1.getPv() != 0){
-    p1.addWin();
-  }else{
+  if (p1.getPv() <= p2.getPv()){
     p2.addWin();
+  }else{
+    p1.addWin();
   }
 reStartGame();
 
