@@ -71,9 +71,6 @@ function startGame(){
   p1.spawnHealthBar(gameWidth*0.33, gameHeight*0.05, gameWidth*0.0825, gameHeight*0.1);
   p2.spawnHealthBar(gameWidth*0.33, gameHeight*0.05, gameWidth*0.9175, gameHeight*0.1);
 
-var p1WinCounter = game.add.text(gameWidth*0.33, gameHeight*0.025, "Win :" + p1.getWin(),{ fill:'#ffffff', size:gameWidth*0.01 });
-var p2WinCounter = game.add.text(gameWidth*0.835, gameHeight*0.025, "Win :" + p2.getWin(),{ fill:'#ffffff', size:gameWidth*0.01 });
-
   //Start countdown, then music and timer
   countdown = 4;
   countdownTimer = game.time.create();//Create a new timer called countdownTimer
@@ -92,9 +89,12 @@ var p2WinCounter = game.add.text(gameWidth*0.835, gameHeight*0.025, "Win :" + p2
   });
   countdownTimer.start(); //Start the countdownTimer when we finished setting it up
 }
+
 function reStartGame(){
   p1.resetPv();
   p2.resetPv();
+  p1.actionReset();
+  p2.actionReset();
   countdown = 4;
   countdownTimer = game.time.create();//Create a new timer called countdownTimer
   countdownTimer.repeat(1000, 4, function(){text.setText(countdown -= 1);
@@ -128,11 +128,11 @@ function beatLoop(){
         p1.actionReset();
         p2.actionReset();
       }else if ((p1Action == 1 && (p2Action == 2 || p2Action == 0)) || (p1Action == 2 && (p2Action == 3 || p2Action == 0)) || (p1Action == 3 && (p2Action == 1 || p2Action == 0))){
-        p2.addPv(-20);
+        p2.addPv(-10);
         p1.setCombo(true);
         p1.actionReset();
       }else if ((p2Action == 1 && (p1Action == 2 || p1Action == 0)) || (p2Action == 2 && (p1Action == 3 || p1Action == 0)) || (p2Action == 3 && (p1Action == 1 || p1Action == 0))){
-        p1.addPv(-20);
+        p1.addPv(-10);
         p2.setCombo(true);
         p2.actionReset();
       }
@@ -157,12 +157,10 @@ function endGame(){
   beatLoopTimer.destroy(); //kill the beatloop timer (or it will run even if the game has ended)
   music.player.pause();
   console.log('end');
-  text = game.add.text(gameWidth*0.5, gameHeight*0.5, 'End', { fill:'#ffffff', size:"20" });
   if (p1.getPv() <= p2.getPv()){
     p2.addWin();
   }else{
     p1.addWin();
   }
 reStartGame();
-
 }

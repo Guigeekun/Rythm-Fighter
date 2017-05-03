@@ -1,7 +1,7 @@
 //Classe pour contruire les joueurs.
 class player {
   constructor(left, down, right, sprite, reversed){ //Create player object with inputs and sprite name that was loaded in preload
-    this._pv = 1000;
+    this._pv = 150;
     this._maxPv = this._pv
     this._combo = false;
     this._action = 0;
@@ -19,10 +19,10 @@ class player {
     this._pv += value;
     if(this._pv > 0){
       game.add.tween(this.healthBar).to({width: (this.getPv()*this.bmd2.width)/this._maxPv}, 200, Phaser.Easing.Linear.None, true);
-      if(this._pv >= 80*100/this._maxPv){
+      if(this._pv >= 80/100*this._maxPv){
         this.bmd.ctx.fillStyle = '#80FF00';
         this.bmd.ctx.fill();
-      }else if (this._pv >= 30*100/this._maxPv){
+      }else if (this._pv >= 30/100*this._maxPv){
         this.bmd.ctx.fillStyle = '#FFFF00';
         this.bmd.ctx.fill();
       }else{
@@ -30,7 +30,7 @@ class player {
         this.bmd.ctx.fill();
       }
     }else {
-      this.healthBar.destroy();
+      this.healthBar.width = 0;
       return endGame();
     }
   }
@@ -48,6 +48,8 @@ class player {
   }
   spawnHealthBar(barWidth, barHeight, x, y){
     //Create Bitmap images
+    this.winCounter = game.add.text(x, y - barHeight, "Win : " + this._win,{ fill:'#ffffff', size:gameWidth*0.01 });
+    this.winCounter.anchor.y = 1;
     this.bmd = game.add.bitmapData(barWidth,barHeight);
     this.bmd.ctx.beginPath();
     this.bmd.ctx.rect(0,0,barWidth,barHeight);
@@ -63,8 +65,9 @@ class player {
     this.healthBar = game.add.sprite(x,y,this.bmd);
     this.healthBar.anchor.y = 0.5;
     if(this.reversed){
-      this.healthBar.angle =180;
-      this.healthBarBg.angle =180;
+      this.healthBar.angle = 180;
+      this.healthBarBg.angle = 180;
+      this.winCounter.anchor.x = 1;
     }
   }
   playAnimation(){
@@ -79,11 +82,19 @@ class player {
     }
   }
   addWin(){
-    this._win =+ 1;
+    this._win += 1;
+    this.winCounter.setText("Win : " + this._win)
   }
   actionReset(){
     this._action = 0;
   }
+  resetPv(){
+    this._pv = this._maxPv;
+    game.add.tween(this.healthBar).to({width: (this.getPv()*this.bmd2.width)/this._maxPv}, 200, Phaser.Easing.Linear.None, true);
+    this.bmd.ctx.fillStyle = '#00685e';
+    this.bmd.ctx.fill();
+  }
+
   //Return values (they're also realy obvious):
   getPv(){
     return this._pv;
@@ -97,10 +108,6 @@ class player {
   getWin(){
     return this._win;
   }
-  resetPv(){
-    this._pv = this._maxPv;
-  }
-
   //Private methods (underscore is a convention, even if it doesn't work in javascript ^^"):
   //1: CAC    2: CAST    3: GUARD
   _left(){
