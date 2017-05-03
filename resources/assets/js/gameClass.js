@@ -40,7 +40,6 @@ class player {
     this._combo = value;
   }
   spawn(spawnX, spawnY, width, height){
-
     this.sprite = game.add.sprite(spawnX, spawnY, this.spriteName); //Spawn the player sprite at given coordinates
     if(this.reversed){
       this.sprite.anchor.setTo(1, 1);

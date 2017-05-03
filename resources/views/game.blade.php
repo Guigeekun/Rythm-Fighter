@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Cailloux Fighter')
+@section('title', 'Rythm Fighter')
 
 @section('scripts')
 <script src="./js/gameClass.js"></script>
