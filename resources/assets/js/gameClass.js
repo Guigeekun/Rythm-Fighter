@@ -1,10 +1,10 @@
 //Classe pour contruire les joueurs.
 class player {
   constructor(left, down, right, sprite, reversed){ //Create player object with inputs and sprite name that was loaded in preload
-    this._pv = 150;
+    this._pv = 300;
     this._maxPv = this._pv
     this._combo = false;
-    this._action = 0;
+    this._action = -1;
     this._win = 0;
     this.reversed = reversed || false;
     this.inputs = game.input.keyboard.addKeys({'left': left, 'down': down, 'right': right});
@@ -44,11 +44,11 @@ class player {
     }else{
       this.sprite.anchor.setTo(0, 1);
     }
-    this.sprite.scale.setTo(width*0.1, height*0.1);
+    this.sprite.scale.setTo(width, height);
   }
   spawnHealthBar(barWidth, barHeight, x, y){
     //Create Bitmap images
-    this.winCounter = game.add.text(x, y - barHeight, "Win : " + this._win,{ fill:'#ffffff', size:gameWidth*0.01 });
+    this.winCounter = game.add.text(x, y - barHeight/2, "Win : " + this._win,{ fill:'#ffffff', size:gameWidth*0.01 });
     this.winCounter.anchor.y = 1;
     this.bmd = game.add.bitmapData(barWidth,barHeight);
     this.bmd.ctx.beginPath();
@@ -88,11 +88,13 @@ class player {
   actionReset(){
     this._action = 0;
   }
-  resetPv(){
+  reset(){
     this._pv = this._maxPv;
     game.add.tween(this.healthBar).to({width: (this.getPv()*this.bmd2.width)/this._maxPv}, 200, Phaser.Easing.Linear.None, true);
     this.bmd.ctx.fillStyle = '#00685e';
     this.bmd.ctx.fill();
+    this._combo = false;
+    this._action = -1;
   }
 
   //Return values (they're also realy obvious):
@@ -151,6 +153,7 @@ class Music { //Beware, this is realy FAT !!!
     this.inputs.up.onDown.add(this._volUp, this);
 
     //Object variables
+    this._lock = true;
     this.player;
     this.current = {}; //Curently loaded song, defined in load() method
     this.audioType = audioType;
@@ -206,28 +209,41 @@ class Music { //Beware, this is realy FAT !!!
       this.player.onDecoded.add(callBack, this);
     }
   }
-  startPlaying(startVol, endVol, duration, endCallback, marker = ""){ //Start the song with fadeIn effect and custom parameters (that are obvious to understand)
+  startPlaying(startVol, endVol, duration, endCallback, restart, marker = ""){ //Start the song with fadeIn effect and custom parameters (that are obvious to understand)
+    this._lock = false;
     this.player.volume = startVol;
-    this.player.play(marker, this.current.startAt);
+    if(!restart){
+      this.player.play(marker, this.current.startAt);
+    }else {
+      this.player.restart(marker, this.current.startAt);
+    }
     this.player.fadeTo(duration, endVol);
     if(typeof endCallback !== "undefined"){try{this.player.onStop.add(endCallback, this);}catch(err){console.log(err);}}
   }
   playing(){ //return the current playing song object (title, path, tempo...)
     return this.current;
   }
+  endMusic(){
+    this.player.fadeOut(1000);
+    this._lock = true;
+  }
   //Private function for volume change
   _volDown(){
-    if(this.player.volume >= 0.1){
-      this.player.volume -= 0.1;
-    }else{
-      this.player.volume = 0
+    if(!this._lock){
+      if(this.player.volume >= 0.1){
+        this.player.volume -= 0.1;
+      }else{
+        this.player.volume = 0
+      }
     }
   }
   _volUp(){
-    if(this.player.volume <= 0.9){
-      this.player.volume += 0.1;
-    }else{
-      this.player.volume = 1
+    if(!this._lock){
+      if(this.player.volume <= 0.9){
+        this.player.volume += 0.1;
+      }else{
+        this.player.volume = 1
+      }
     }
   }
 }
