@@ -3,6 +3,8 @@ var difficulty = 2;
 var counterTime = 1;
 var gameWidth;
 var gameHeight;
+var p1WinCounter;
+var p2WinCounter;
 
 //Music global variable
 var music;
@@ -57,6 +59,9 @@ function create() {
 //startGame run when the music is decoded by the browser
 function startGame(){
 
+  p1._pv = 150;
+  p2._pv = 150; // HP reset
+
   //Delete loading bar and add player sprites on specific coordinates.
   $(".meter").remove();
   p1.spawn(gameWidth*0.165, gameHeight*0.8, gameWidth*0.01, gameWidth*0.01);
@@ -66,9 +71,12 @@ function startGame(){
   p1.spawnHealthBar(gameWidth*0.33, gameHeight*0.05, gameWidth*0.0825, gameHeight*0.1);
   p2.spawnHealthBar(gameWidth*0.33, gameHeight*0.05, gameWidth*0.9175, gameHeight*0.1);
 
+var p1WinCounter = game.add.text(gameWidth*0.33, gameHeight*0.025, "Win :" + p1.getWin());
+var p2WinCounter = game.add.text(gameWidth*0.835, gameHeight*0.025, "Win :" + p2.getWin());
+
   //Start countdown, then music and timer
   countdown = 4;
-  countdownTimer = game.time.create()//Create a new timer called countdownTimer
+  countdownTimer = game.time.create();//Create a new timer called countdownTimer
   countdownTimer.repeat(1000, 4, function(){text.setText(countdown -= 1);
 
   text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
@@ -131,4 +139,11 @@ function endGame(){
   music.player.destroy();
   console.log('end');
   text = game.add.text(gameWidth*0.5, gameHeight*0.5, 'End', { fill:'#ffffff', size:"20" });
+  if (p1.getPv() != 0){
+    p1.addWin();
+  }else{
+    p2.addWin();
+  }
+startGame();
+
 }

@@ -5,6 +5,7 @@ class player {
     this._maxPv = this._pv
     this._combo = false;
     this._action = 0;
+    this._win = 0;
     this.reversed = reversed || false;
     this.inputs = game.input.keyboard.addKeys({'left': left, 'down': down, 'right': right});
     this.spriteName = sprite;
@@ -77,6 +78,9 @@ class player {
       //play animation PRD
     }
   }
+  addWin(){
+    this._win =+ 1;
+  }
   actionReset(){
     this._action = 0;
   }
@@ -90,6 +94,10 @@ class player {
   isCombo(){
     return this._combo;
   }
+  getWin(){
+    return this._win;
+  }
+
   //Private methods (underscore is a convention, even if it doesn't work in javascript ^^"):
   //1: CAC    2: CAST    3: GUARD
   _left(){
