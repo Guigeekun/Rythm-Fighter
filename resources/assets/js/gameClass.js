@@ -38,7 +38,7 @@ class player {
     this._combo = value;
   }
   spawn(spawnX, spawnY, width, height){
-    
+
     this.sprite = game.add.sprite(spawnX, spawnY, this.spriteName); //Spawn the player sprite at given coordinates
     if(this.reversed){
       this.sprite.anchor.setTo(1, 1);
@@ -74,16 +74,16 @@ class player {
   playAnimation(){
     switch(this.getAction()){
    case 0:
-   statique_p1
-   case 1: 
+  
+   case 1:
       //play animation CAC
       break;
    case  2:
-    
+
       //play animation CAST
       break;
     case 3:
-    
+
       //play animation PRD
       break;
     }
