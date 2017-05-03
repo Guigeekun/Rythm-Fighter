@@ -29,11 +29,7 @@ this.video=document.createElement("video"),this.video.controls=!1,b&&this.video.
 //# sourceMappingURL=phaser.map
 //Difficulties = 1: Hard 2: normal, 4: easy (Selection menu in the future ?)
 var difficulty = 2;
-<<<<<<< HEAD
-var counterTime = false;
-=======
 var counterTime = 1;
->>>>>>> master
 var gameWidth;
 var gameHeight;
 
@@ -123,25 +119,12 @@ function beatLoop(){
   p1Action = p1.getAction();
   p2Action = p2.getAction();
 
-<<<<<<< HEAD
-  if(!counterTime){
-=======
   if(counterTime > 0){
->>>>>>> master
     p1.playAnimation();
     p2.playAnimation();
     //battle system
     if (p1Action != 0 || p2Action != 0 ){
       if(p1Action == p2Action && p1Action != 3 && p2Action != 3){
-<<<<<<< HEAD
-        console.log("blink");
-      }else if ((p1Action == 1 && (p2Action == 2 || p2Action == 0)) || (p1Action == 2 && (p2Action == 3 || p2Action == 0)) || (p1Action == 3 && (p2Action == 2 || p2Action == 0))){
-        p2.addPv(-10);
-        p1.setCombo(true);
-        p1.actionReset();
-      }else if ((p2Action == 1 && (p1Action == 2 || p1Action == 0)) || (p2Action == 2 && (p1Action == 3 || p1Action == 0)) || (p1Action == 3 && (p2Action == 2 || p1Action == 0))){
-        p1.addPv(-10);
-=======
         counterTime += 2;
         p1.actionReset();
         p2.actionReset();
@@ -151,33 +134,22 @@ function beatLoop(){
         p1.actionReset();
       }else if ((p2Action == 1 && (p1Action == 2 || p1Action == 0)) || (p2Action == 2 && (p1Action == 3 || p1Action == 0)) || (p2Action == 3 && (p1Action == 1 || p1Action == 0))){
         p1.addPv(-20);
->>>>>>> master
         p2.setCombo(true);
         p2.actionReset();
       }
     }
-<<<<<<< HEAD
-    counterTime = true;
-=======
     counterTime -= 1;
->>>>>>> master
   }else {
     if(p1Action != 0 && p1.isCombo()){
       p2.addPv(-5);
     }else if (p2Action != 0 && p2.isCombo()) {
       p1.addPv(-5);
     }
-<<<<<<< HEAD
-    p1.actionReset();
-    p2.actionReset();
-    counterTime = false;
-=======
     p1.setCombo(false);
     p2.setCombo(false);
     p1.actionReset();
     p2.actionReset();
     counterTime += 1;
->>>>>>> master
   }
 }
 
@@ -187,8 +159,5 @@ function endGame(){
   music.player.pause();
   music.player.destroy();
   console.log('end');
-<<<<<<< HEAD
-=======
   text = game.add.text(gameWidth*0.5, gameHeight*0.5, 'End', { fill:'#ffffff', size:"20" });
->>>>>>> master
 }
