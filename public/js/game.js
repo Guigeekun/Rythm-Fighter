@@ -29,7 +29,7 @@ this.video=document.createElement("video"),this.video.controls=!1,b&&this.video.
 //# sourceMappingURL=phaser.map
 //Difficulties = 1: Hard 2: normal, 4: easy (Selection menu in the future ?)
 var difficulty = 2;
-var counterTime = false;
+var counterTime = 1;
 var gameWidth;
 var gameHeight;
 
@@ -49,7 +49,7 @@ function preload() {
   game.load.onFileComplete.add(loading, this);
 
   //add loading text
-  text = game.add.text(gameWidth*0.5, gameHeight*0.5, 'Loading...', { fill:'#ffffff', size:"20" });
+  text = game.add.text(gameWidth*0.5, gameHeight*0.5, 'Loading...', { fill:'#ffffff', size:gameWidth*0.01 });
   text.anchor.setTo(0.5, 0.5)
 
   //Load game sprites, there will be more in the future
@@ -100,9 +100,9 @@ function startGame(){
   countdownTimer = game.time.create()//Create a new timer called countdownTimer
   countdownTimer.repeat(1000, 4, function(){text.setText(countdown -= 1);
 
-     text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
-      //  We'll set the bounds to be from x0, y100 and be 800px wide by 100px high
-      text.setTextBounds(0, 100, gameWidth, gameHeight);}, this);
+  text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
+  //  We'll set the bounds to be from x0, y100 and be 800px wide by 100px high
+  text.setTextBounds(0, 100, gameWidth, gameHeight);}, this);
   countdownTimer.onComplete.add(function(){ //When countdown is finished, do that:
     countdownTimer.destroy(); //kill the now useless countdownTimer
     text.destroy(); //Remove the countdown text
@@ -112,31 +112,33 @@ function startGame(){
     beatLoopTimer.start(); //Start the beatLoopTimer when we finished setting it up
   });
   countdownTimer.start(); //Start the countdownTimer when we finished setting it up
-
 }
+
 //executed on each beat (change with difficulty)
 function beatLoop(){
   p1Action = p1.getAction();
   p2Action = p2.getAction();
 
-  if(!counterTime){
+  if(counterTime > 0){
     p1.playAnimation();
     p2.playAnimation();
     //battle system
     if (p1Action != 0 || p2Action != 0 ){
       if(p1Action == p2Action && p1Action != 3 && p2Action != 3){
-        console.log("blink");
+        counterTime += 2;
+        p1.actionReset();
+        p2.actionReset();
       }else if ((p1Action == 1 && (p2Action == 2 || p2Action == 0)) || (p1Action == 2 && (p2Action == 3 || p2Action == 0)) || (p1Action == 3 && (p2Action == 1 || p2Action == 0))){
-        p2.addPv(-10);
+        p2.addPv(-20);
         p1.setCombo(true);
         p1.actionReset();
       }else if ((p2Action == 1 && (p1Action == 2 || p1Action == 0)) || (p2Action == 2 && (p1Action == 3 || p1Action == 0)) || (p2Action == 3 && (p1Action == 1 || p1Action == 0))){
-        p1.addPv(-10);
+        p1.addPv(-20);
         p2.setCombo(true);
         p2.actionReset();
       }
     }
-    counterTime = true;
+    counterTime -= 1;
   }else {
     if(p1Action != 0 && p1.isCombo()){
       p2.addPv(-5);
@@ -147,7 +149,7 @@ function beatLoop(){
     p2.setCombo(false);
     p1.actionReset();
     p2.actionReset();
-    counterTime = false;
+    counterTime += 1;
   }
 }
 
@@ -157,4 +159,5 @@ function endGame(){
   music.player.pause();
   music.player.destroy();
   console.log('end');
+  text = game.add.text(gameWidth*0.5, gameHeight*0.5, 'End', { fill:'#ffffff', size:"20" });
 }

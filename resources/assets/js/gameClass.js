@@ -1,7 +1,8 @@
 //Classe pour contruire les joueurs.
 class player {
   constructor(left, down, right, sprite, reversed){ //Create player object with inputs and sprite name that was loaded in preload
-    this._pv = 150;
+    this._pv = 1000;
+    this._maxPv = this._pv
     this._combo = false;
     this._action = 0;
     this.reversed = reversed || false;
@@ -16,11 +17,11 @@ class player {
     //play animation when you get hit
     this._pv += value;
     if(this._pv > 0){
-      game.add.tween(this.healthBar).to({width: (this.getPv()*this.bmd2.width)/150}, 300, Phaser.Easing.Linear.None, true);
-      if(this._pv >= 80*150/100){
+      game.add.tween(this.healthBar).to({width: (this.getPv()*this.bmd2.width)/this._maxPv}, 200, Phaser.Easing.Linear.None, true);
+      if(this._pv >= 80*100/this._maxPv){
         this.bmd.ctx.fillStyle = '#80FF00';
         this.bmd.ctx.fill();
-      }else if (this._pv >= 30*150/100){
+      }else if (this._pv >= 30*100/this._maxPv){
         this.bmd.ctx.fillStyle = '#FFFF00';
         this.bmd.ctx.fill();
       }else{
@@ -56,7 +57,6 @@ class player {
     this.bmd2.ctx.rect(0,0,barWidth,barHeight+6);
     this.bmd2.ctx.fillStyle = '#000000';
     this.bmd2.ctx.fill();
-
     this.healthBarBg = game.add.sprite(x,y,this.bmd2);
     this.healthBarBg.anchor.y = 0.5;
     this.healthBar = game.add.sprite(x,y,this.bmd);
