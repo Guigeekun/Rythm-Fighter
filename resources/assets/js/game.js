@@ -28,9 +28,9 @@ function preload() {
   text.anchor.setTo(0.5, 0.5)
 
   //Load game sprites, there will be more in the future
-  game.load.image('player1', 'img/_rocky/rocky01.png');
-  game.load.image('player2', 'img/_ground/ground05.png');
-  game.load.image('background', 'img/Background.png');
+  game.load.spritesheet('player1', './img/spritesheet_p1.png',267,185);
+  game.load.spritesheet('player2', './img/spritesheet_p2.png',267,185);
+  game.load.image('background', './img/Background.png');
 
   //Create music object and add song to playlist then load it in ogg format
   music = new Music(Phaser.Keyboard.F1, Phaser.Keyboard.F2, 'song');
@@ -46,7 +46,20 @@ function loading(progress, cacheKey, success, totalLoaded, totalFiles){
 }
 
 function create() {
-
+  /*
+  player1.
+  player2.animations.add('statique_p2', [0, 1, 2, 3], 7, true);
+  player1.animations.add('damage_p1',[17],1.55);
+  player2.animations.add('damage_p2',[17],1.55);
+  player1.animations.add('death_p1',[51,52,53,54,55,56,57,58],12.67);
+  player2.animations.add('death_p2',[51,52,53,54,55,56,57,58],12.67,true);
+  player1.animations.add('cac_p1', [68,69,70,71,72,73,74,75,76,77,78,79,80,81], 22.17, true);
+  player2.animations.add('cac_p2', [68,69,70,71,72,73,74,75,76,77,78,79,80,81], 22.17, true);
+  player1.animations.add('cast_p1', [85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101],26.92,true);
+  player2.animations.add('cast_p2', [85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101],26.92,true);
+  player1.animations.add('def_p1', [102,103,104,105,106,107,108,109,110,111,112,113],19,true);
+  player2.animations.add('def_p2', [102,103,104,105,106,107,108,109,110,111,112,113],19,true);
+*/
   //Set text to "loading..." because we can't know the time the browser takes to decode the music
   text.setText("Loading...");
 
@@ -60,6 +73,9 @@ function create() {
 
 //startGame run when the music is decoded by the browser
 function startGame(){
+mysprite = game.add.sprite(500, 500, 'player1');
+mysprite.animations.add('statique_p1', [0, 1, 2, 3], 7, true);
+mysprite.animations.play('statique_p1');
 
   //Delete loading bar and add player sprites on specific coordinates.
   $(".meter").remove();
