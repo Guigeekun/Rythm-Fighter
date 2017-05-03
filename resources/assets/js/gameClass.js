@@ -97,6 +97,9 @@ class player {
   getWin(){
     return this._win;
   }
+  resetPv(){
+    this._pv = this._maxPv;
+  }
 
   //Private methods (underscore is a convention, even if it doesn't work in javascript ^^"):
   //1: CAC    2: CAST    3: GUARD
