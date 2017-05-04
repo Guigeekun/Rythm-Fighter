@@ -62,8 +62,8 @@ function startGame(){
 
   //Delete loading bar and add player sprites on specific coordinates.
   $(".meter").remove();
-  p1.spawn(gameWidth*0.165, gameHeight*0.82, gameWidth*0.5, gameHeight*0.5);
-  p2.spawn(gameWidth*0.835, gameHeight*0.82, gameWidth*0.5, gameHeight*0.5);
+  p1.spawn(gameWidth*0.165, gameHeight*0.82, gameWidth*0.345, gameHeight*0.5); // 185/285 * 0.5
+  p2.spawn(gameWidth*0.835, gameHeight*0.82, gameWidth*0.345, gameHeight*0.5); // rapport * taille de l'ecran (it work idk how)
 
   //Health bars
   p1.spawnHealthBar(gameWidth*0.33, gameHeight*0.05, gameWidth*0.0825, gameHeight*0.1);
