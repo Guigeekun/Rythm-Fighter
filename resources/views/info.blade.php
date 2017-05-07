@@ -13,16 +13,24 @@
 header, footer {
     padding: 1em;
     color: white;
-    background-color: black;
+    background-color: #000000;
+
     clear: left;
     text-align: center;
 }
 
 
+nav {
+    float:left;
+    max-width: 127px;
+    margin: 0;
+    padding: 1em;
+    background:#bfbfbf;
+}
 
 nav ul {
-    list-style-type: none;
-    padding: 0;
+    list-style-type: ;
+    padding: 50;
 }
    
 nav ul a {
@@ -37,16 +45,14 @@ article {
 }
 </style>
 
-
-<div class="container">
-
 <header>
    <h1>un jeu de combat</h1>
 </header>
 <article>
-    
+    <div class="container">
     <P>Ce jeu a été pensé comme un jeu de combat: c'est à dire que le but du jeu est de faire chuter les points de vies de l'adversaire a 0; en plus d'etre un jeu qui se joue EXCLUSIVEMENT à 2 joueurs.</p>
       <br>vous avez le choix entre plusieurs types d'attaques:</br>
+      </div class="container">
       <style>
       table {
     font-family: arial, sans-serif;
@@ -85,7 +91,19 @@ td, th {
   </tr>
 </table>
 </article>
-      
+<nav>
+  <ul>
+    <li><a href="#">un jeu de combat</a></li>
+    <br></br>
+    <br></br>
+    <br></br>
+    <li><a href="#">un jeu basé sur le pierre-feuille-ciseau</a></li>
+    <br></br>
+    <br></br>
+    <br></br>
+    <li><a href="#">l'importance du rythme</a></li>
+  </ul>
+      </nav>
       <style>
    
 nav ul a {
@@ -164,7 +182,8 @@ article {
      <br></br>
      <br>appuyer sur une touche affiche en dessous du personnage l'attaque qui sera jouée, informant ainsi l'adversaire</br>
      <br>Il est donc fortement conseillé d'entrer son attaque au dernier moment, afin de donner le moins d'opportunité possible à son adversaire de s'adapter.
-     la barre suivante :<img id="cac" src="img/icon/prd-icon.png" style="width:500px;height:100px;"></img>     aidera le joueur à respecter le rythme</br>
+     </br>
+     <footer><img id="rythmFighterBg" src="img/Background.png" style="width:800px;height:300px;"></img></footer>
      </article>
   </font>
 </div>
