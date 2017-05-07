@@ -19,7 +19,7 @@ class MenuController extends Controller
     }
     public function info()
     {
-        return view('info1');
+        return view('info');
     }
 
     public function info1()
