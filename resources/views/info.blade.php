@@ -8,17 +8,26 @@
   <FONT size="5%" color="#FFFFFF" face="arial">
     
   <h1><u>Règles du jeu</h1></u>
-        <style>
 
-header, footer {
+        <style>;                                  /*css*/
+
+header {
     padding: 1em;
     color: white;
-    background-color: #000000;
+    background-color: black;
 
     clear: left;
     text-align: center;
-}
 
+}
+footer{
+   padding: 1em;
+    color: white;
+    background-color: #808080;
+
+    clear: left;
+    text-align: center;
+  }
 
 nav {
     float:left;
@@ -30,7 +39,7 @@ nav {
 
 nav ul {
     list-style-type: ;
-    padding: 50;
+    margin
 }
    
 nav ul a {
@@ -42,19 +51,12 @@ article {
     border-left: 1px solid gray;
     padding: 1em;
     overflow: hidden;
-}
-</style>
-
-<header>
-   <h1>un jeu de combat</h1>
-</header>
-<article>
-    <div class="container">
-    <P>Ce jeu a été pensé comme un jeu de combat: c'est à dire que le but du jeu est de faire chuter les points de vies de l'adversaire a 0; en plus d'etre un jeu qui se joue EXCLUSIVEMENT à 2 joueurs.</p>
-      <br>vous avez le choix entre plusieurs types d'attaques:</br>
-      </div class="container">
-      <style>
-      table {
+  }
+  div{
+    background-color:black /* black background with 30% opacity */
+    opacity:0.3;
+  }
+       table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
@@ -65,7 +67,20 @@ td, th {
     padding: 8px;
     background-color:#999999;
 }
+}
+</style>                                          
+
+<header>
+   <h1>un jeu de combat</h1>
+</header>
+<article>
+    <div class="text">
+    <P>Ce jeu a été pensé comme un jeu de combat: c'est à dire que le but du jeu est de faire chuter les points de vies de l'adversaire a 0; en plus d'etre un jeu qui se joue EXCLUSIVEMENT à 2 joueurs.</p>
+      <br>vous avez le choix entre plusieurs types d'attaques:</br>
+      </div class="text">
+    
 </style>
+
 <table>
   <tr>
     <th>attaques</th>
@@ -93,30 +108,17 @@ td, th {
 </article>
 <nav>
   <ul>
-    <li><a href="#">un jeu de combat</a></li>
+    <li><a href="https//1/">un jeu de combat</a></li>
     <br></br>
     <br></br>
     <br></br>
-    <li><a href="#">un jeu basé sur le pierre-feuille-ciseau</a></li>
+    <li><a href="https//2/">un jeu basé sur le pierre-feuille-ciseau</a></li>
     <br></br>
     <br></br>
     <br></br>
-    <li><a href="#">l'importance du rythme</a></li>
+    <li><a href="https//3">l'importance du rythme</a></li>
   </ul>
       </nav>
-      <style>
-   
-nav ul a {
-    text-decoration: none;
-}
-
-article {
-    margin-left: 170px;
-    border-left: 1px white;
-    padding: 1em;
-    overflow:hidden ;
-}
-</style>
 
 
 <div class="container">
@@ -133,34 +135,7 @@ article {
     <img id="schema" src="img/icon/schema.png" style="width:500px;height:400px;"></img>
 </article>
     
-      <style>
-
-header, footer {
-    padding: 1em;
-    color: white;
-    background-color: black;
-    clear: left;
-    text-align: center;
-}
-
-
-
-nav ul {
-    list-style-type: none;
-    padding: 0;
-}
-   
-nav ul a {
-    text-decoration: none;
-}
-
-article {
-    margin-left: 170px;
-    border-left: 1px solid gray;
-    padding: 1em;
-    overflow: hidden;
-}
-</style>
+ 
 
 
 <div class="container">
@@ -183,7 +158,7 @@ article {
      <br>appuyer sur une touche affiche en dessous du personnage l'attaque qui sera jouée, informant ainsi l'adversaire</br>
      <br>Il est donc fortement conseillé d'entrer son attaque au dernier moment, afin de donner le moins d'opportunité possible à son adversaire de s'adapter.
      </br>
-     <footer><img id="rythmFighterBg" src="img/Background.png" style="width:800px;height:300px;"></img></footer>
+     
      </article>
   </font>
 </div>

@@ -7,6 +7,7 @@
 <div align="center" style="overflow: auto; height: 100%">
   <FONT size="5%" color="#FFFFFF" face="arial">
  <style>
+ background-color :
 header, footer {
     padding: 1em;
     color: white;
@@ -31,6 +32,7 @@ article {
     border-left: 1px solid gray;
     padding: 1em;
     overflow: hidden;
+    background-color:<img id="rythmFighterBg" src="img/Background.png"></img>;
 }
 </style>
 
