@@ -88,9 +88,9 @@ class player {
     }
     if(this._action == 2){
       this.anim.cast.play().onComplete.add(function(){this.anim.static.play("", true)}, this);
-      if (this.reversed == 0){
-      game.add.tween(this.sprite).to({x: this.sprite.x-0.20*gameWidth},300,Phaser.Easing.Linear.None, true).onComplete.add(function(){game.add.tween(this.sprite).to({x: this.sprite+0.2*gameWidth},300,Phaser.Easing.Linear.None, true)});
-      }
+    //  if (this.reversed == 0){
+    //  game.add.tween(this.sprite).to({x: this.sprite.x-0.20*gameWidth},300,Phaser.Easing.Linear.None, true).onComplete.add(function(){game.add.tween(this.sprite).to({x: this.sprite+0.2*gameWidth},300,Phaser.Easing.Linear.None, true)});
+    //  }
     }
     if(this._action == 3){
       this.anim.def.play().onComplete.add(function(){this.anim.static.play("", true)}, this);

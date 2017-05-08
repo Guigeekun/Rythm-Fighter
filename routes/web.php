@@ -16,3 +16,6 @@ Route::get('/', function () {
 });
 Route::get('/game','MenuController@game');
 Route::get('/info','MenuController@info');
+Route::get('/info1','MenuController@info1');
+Route::get('/info2','MenuController@info2');
+Route::get('/info3','MenuController@info3');

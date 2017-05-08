@@ -27,8 +27,10 @@ function preload() {
   game.load.spritesheet('player1', 'img/spritesheet p1.png', 267, 185);
   game.load.spritesheet('player2', 'img/spritesheet p2.png', 267, 185);
   game.load.image('background', 'img/Background.png');
-  game.load.image('cacIcon', 'img/icon/cac-icon.png');
-  game.load.image('castIcon', 'img/icon/cast-icon.png');
+  game.load.image('icon', 'img/icon/iconsNeutral.png');
+  game.load.image('iconCac', 'img/icon/iconsCac.png');
+  game.load.image('iconCast', 'img/icon/iconsCast.png');
+  game.load.image('iconPrd', 'img/icon/iconsPrd.png');
 
 
   //Create music object and add song to playlist then load it in ogg format
@@ -70,10 +72,7 @@ function startGame(){
   p2.spawnHealthBar(gameWidth*0.33, gameHeight*0.05, gameWidth*0.9175, gameHeight*0.1);
 
   //Icon j1
-  iconCacJ1 = game.add.sprite(gameWidth*0.30, gameHeight*0.8, 'cacIcon');
-  iconCastJ1 = game.add.sprite(gameWidth*0.20, gameHeight*0.8, 'castIcon');
-  iconCacJ1.scale.setTo(0.2, 0.2);
-  iconCastJ1.scale.setTo(0.35, 0.35);
+  //iconCacJ1 = game.add.sprite(gameWidth*0.30, gameHeight*0.8, 'cacIcon');
 
   //Start countdown, then music and timer
   countdown = 4;

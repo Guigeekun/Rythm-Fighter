@@ -17,9 +17,21 @@ class MenuController extends Controller
     {
         return view('game');
     }
-
     public function info()
     {
         return view('info');
+    }
+
+    public function info1()
+    {
+        return view('info1');
+    }
+    public function info2()
+    {
+        return view('info2');
+    }
+    public function info3()
+    {
+        return view('info3');
     }
 }
