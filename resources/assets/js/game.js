@@ -26,12 +26,8 @@ function preload() {
   //Load game sprites, there will be more in the future
   game.load.spritesheet('player1', 'img/spritesheet p1.png', 267, 185);
   game.load.spritesheet('player2', 'img/spritesheet p2.png', 267, 185);
+  game.load.spritesheet('icon', 'img/icon/spritesheeticon.png', 850, 250);
   game.load.image('background', 'img/Background.png');
-  game.load.image('icon', 'img/icon/iconsNeutral.png');
-  game.load.image('iconCac', 'img/icon/iconsCac.png');
-  game.load.image('iconCast', 'img/icon/iconsCast.png');
-  game.load.image('iconPrd', 'img/icon/iconsPrd.png');
-
 
   //Create music object and add song to playlist then load it in ogg format
   music = new Music(Phaser.Keyboard.F1, Phaser.Keyboard.F2, 'song');
@@ -70,9 +66,6 @@ function startGame(){
   //Health bars
   p1.spawnHealthBar(gameWidth*0.33, gameHeight*0.05, gameWidth*0.0825, gameHeight*0.1);
   p2.spawnHealthBar(gameWidth*0.33, gameHeight*0.05, gameWidth*0.9175, gameHeight*0.1);
-
-  //Icon j1
-  //iconCacJ1 = game.add.sprite(gameWidth*0.30, gameHeight*0.8, 'cacIcon');
 
   //Start countdown, then music and timer
   countdown = 4;
@@ -165,6 +158,8 @@ function beatLoop(){
 //Executed when music end (or when a player reach 0 pv)
 function endGame(){
   if(!ended){
+    p1.actionReset();
+    p2.actionReset();
     ended = true;
     beatLoopTimer.destroy(); //kill the beatloop timer (or it will run even if the game has ended)
     music.endMusic();
