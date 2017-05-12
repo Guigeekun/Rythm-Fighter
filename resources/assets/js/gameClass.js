@@ -40,6 +40,12 @@ class player {
     this._combo = value;
   }
   spawn(spawnX, spawnY, width, height){
+    if (this.reversed){
+      this.icon = game.add.sprite(gameWidth*0.68, gameHeight*0.83, 'icon', 0);
+    }else{
+      this.icon = game.add.sprite(gameWidth*0.05, gameHeight*0.83, 'icon', 4);
+    }
+    this.icon.scale.setTo((gameWidth/1600)/2,(gameHeight/900)/2);
     this.sprite = game.add.sprite(spawnX, spawnY, this.spriteName); //Spawn the player sprite at given coordinates
     if(this.reversed){
       this.sprite.anchor.setTo(1, 1);
@@ -104,7 +110,13 @@ class player {
   }
   actionReset(){
     this._action = 0;
-  }
+    if(this.reversed){
+      this.icon = game.add.sprite(gameWidth*0.68, gameHeight*0.83, 'icon', 0);
+    }else{
+      this.icon = game.add.sprite(gameWidth*0.05, gameHeight*0.83, 'icon', 4);
+    }
+      this.icon.scale.setTo((gameWidth/1600)/2,(gameHeight/900)/2);
+}
   reset(){
     this._pv = this._maxPv;
     game.add.tween(this.healthBar).to({width: (this.getPv()*this.bmd2.width)/this._maxPv}, 200, Phaser.Easing.Linear.None, true);
@@ -132,20 +144,29 @@ class player {
   _left(){
     if(this._action == 0){
       if(this.reversed){
+        this.icon = game.add.sprite(gameWidth*0.68, gameHeight*0.83, 'icon',1);
         this._action = 1;
       }else{
         if(this._combo){
           this._action = 0;
         }else{
           this._action = 3;
+          this.icon = game.add.sprite(gameWidth*0.05, gameHeight*0.83, 'icon',7);
         }
       }
     }
+    this.icon.scale.setTo((gameWidth/1600)/2,(gameHeight/900)/2);
   }
   _down(){
     if(this._action == 0){
+      if(this.reversed){
+          this.icon = game.add.sprite(gameWidth*0.68, gameHeight*0.83, 'icon',2);
+      }else{
+          this.icon = game.add.sprite(gameWidth*0.05, gameHeight*0.83, 'icon',6);
+      }
       this._action = 2;
     }
+    this.icon.scale.setTo((gameWidth/1600)/2,(gameHeight/900)/2);
   }
   _right(){
     if(this._action == 0){
@@ -153,12 +174,15 @@ class player {
         if(this._combo){
           this._action = 0;
         }else{
+          this.icon = game.add.sprite(gameWidth*0.68, gameHeight*0.83, 'icon',3);
           this._action = 3;
         }
       }else{
         this._action = 1;
+        this.icon = game.add.sprite(gameWidth*0.05, gameHeight*0.83, 'icon',5);
       }
     }
+    this.icon.scale.setTo((gameWidth/1600)/2,(gameHeight/900)/2);
   }
 }
 
