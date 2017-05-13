@@ -2,7 +2,7 @@
 class player {
   constructor(left, down, right, sprite, reversed){ //Create player object with inputs and sprite name that was loaded in preload
     this._pv = 300;
-    this._maxPv = this._pv
+    this._maxPv = this._pv;
     this._combo = false;
     this._action = -1;
     this._win = 0;
@@ -15,7 +15,6 @@ class player {
   }
   //Public methods (These are realy obvious, add more if you want ^^):
   addPv(value){
-    //play animation when you get hit
     this._pv += value;
     if(this._pv > 0){
       this.anim.damage.play().onComplete.add(function(){this.anim.static.play("", true)}, this);
