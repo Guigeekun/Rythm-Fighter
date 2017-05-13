@@ -9,12 +9,18 @@ class player {
     this.spriteName = sprite;
     this.reversed = reversed || false;
     this.inputs = game.input.keyboard.addKeys({'left': left, 'down': down, 'right': right});
-    this.inputs.down.onDown.add(this._down, this);
-    this.inputs.left.onDown.add(this._left, this);
-    this.inputs.right.onDown.add(this._right, this);
+    if(this.reversed){
+      this.inputs.left.onDown.add(this._cac, this);
+      this.inputs.right.onDown.add(this._guard, this);
+    }else{
+      this.inputs.left.onDown.add(this._guard, this);
+      this.inputs.right.onDown.add(this._cac, this);
+    }
+    this.inputs.down.onDown.add(this._cast, this);
   }
   //Public methods (These are realy obvious, add more if you want ^^):
   addPv(value){
+    //play animation when you get hit
     this._pv += value;
     if(this._pv > 0){
       this.anim.damage.play().onComplete.add(function(){this.anim.static.play("", true)}, this);
@@ -39,12 +45,6 @@ class player {
     this._combo = value;
   }
   spawn(spawnX, spawnY, width, height){
-    if (this.reversed){
-      this.icon = game.add.sprite(gameWidth*0.68, gameHeight*0.83, 'icon', 0);
-    }else{
-      this.icon = game.add.sprite(gameWidth*0.05, gameHeight*0.83, 'icon', 4);
-    }
-    this.icon.scale.setTo((gameWidth/1600)/2,(gameHeight/900)/2);
     this.sprite = game.add.sprite(spawnX, spawnY, this.spriteName); //Spawn the player sprite at given coordinates
     if(this.reversed){
       this.sprite.anchor.setTo(1, 1);
@@ -66,6 +66,12 @@ class player {
   spawnHealthBar(barWidth, barHeight, x, y){
     //Create Bitmap images
     this.winCounter = game.add.text(x, y - barHeight/2, "Win : " + this._win,{ fill:'#ffffff', size:gameWidth*0.01 });
+    if(this.reversed){
+      this.icon = game.add.sprite(x, this.sprite.y + 10, 'icon', 0);
+    }else{
+      this.icon = game.add.sprite(x, this.sprite.y + 10, 'icon', 4);
+    }
+    this.icon.scale.setTo((gameWidth/1600)/2,(gameHeight/900)/2);
     this.winCounter.anchor.y = 1;
     this.bmd = game.add.bitmapData(barWidth,barHeight);
     this.bmd.ctx.beginPath();
@@ -82,6 +88,7 @@ class player {
     this.healthBar = game.add.sprite(x,y,this.bmd);
     this.healthBar.anchor.y = 0.5;
     if(this.reversed){
+      this.icon.anchor.setTo(1, 0);
       this.healthBar.angle = 180;
       this.healthBarBg.angle = 180;
       this.winCounter.anchor.x = 1;
@@ -110,9 +117,9 @@ class player {
   actionReset(){
     this._action = 0;
     if(this.reversed){
-      this.icon = game.add.sprite(gameWidth*0.68, gameHeight*0.83, 'icon', 0);
+      this.icon.frame = 0
     }else{
-      this.icon = game.add.sprite(gameWidth*0.05, gameHeight*0.83, 'icon', 4);
+      this.icon.frame = 4;
     }
       this.icon.scale.setTo((gameWidth/1600)/2,(gameHeight/900)/2);
 }
@@ -140,46 +147,36 @@ class player {
   }
   //Private methods (underscore is a convention, even if it doesn't work in javascript ^^"):
   //1: CAC    2: CAST    3: GUARD
-  _left(){
+  _cac(){
     if(this._action == 0){
       if(this.reversed){
-        this.icon = game.add.sprite(gameWidth*0.68, gameHeight*0.83, 'icon',1);
-        this._action = 1;
+        this.icon.frame = 1;
       }else{
-        if(this._combo){
-          this._action = 0;
-        }else{
-          this._action = 3;
-          this.icon = game.add.sprite(gameWidth*0.05, gameHeight*0.83, 'icon',7);
-        }
+        this.icon.frame = 5;
       }
+      this._action = 1;
     }
     this.icon.scale.setTo((gameWidth/1600)/2,(gameHeight/900)/2);
   }
-  _down(){
+  _cast(){
     if(this._action == 0){
       if(this.reversed){
-          this.icon = game.add.sprite(gameWidth*0.68, gameHeight*0.83, 'icon',2);
+          this.icon.frame = 2;
       }else{
-          this.icon = game.add.sprite(gameWidth*0.05, gameHeight*0.83, 'icon',6);
+          this.icon.frame = 6;
       }
       this._action = 2;
     }
     this.icon.scale.setTo((gameWidth/1600)/2,(gameHeight/900)/2);
   }
-  _right(){
+  _guard(){
     if(this._action == 0){
       if(this.reversed){
-        if(this._combo){
-          this._action = 0;
-        }else{
-          this.icon = game.add.sprite(gameWidth*0.68, gameHeight*0.83, 'icon',3);
-          this._action = 3;
-        }
+        this.icon.frame = 3;
       }else{
-        this._action = 1;
-        this.icon = game.add.sprite(gameWidth*0.05, gameHeight*0.83, 'icon',5);
+        this.icon.frame = 7;
       }
+      this._action = 3;
     }
     this.icon.scale.setTo((gameWidth/1600)/2,(gameHeight/900)/2);
   }
